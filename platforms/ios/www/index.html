@@ -1,0 +1,303 @@
+<!doctype html>
+<html id="htmlnode" class="htmlClass overthrow">
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        
+        <link href="css/styles.css" rel="stylesheet" type="text/css"/>
+        <script src="http://192.168.1.113:8080/target/target-script-min.js#anonymous"></script>
+
+        <script type="text/javascript">
+            var djConfig = {
+                parseOnLoad:true,
+                isDebug:false,
+                locale:"en_US",
+                async:true,
+                baseUrl: "js",
+                tlmSiblingOfDojo: false,
+                packages: [
+                    { name: "Bootstrap", location: "App", main: "Bootstrap" },
+                    { name: "PaginationManager", location: "App", main: "PaginationManager" },
+                    { name: "ViewTransitionListener", location: "App", main: "ViewTransitionListener" },
+                    { name: "DetailView", location: "App", main: "DetailView" },
+                    { name: "Utilities", location: "Util", main: "Utilities" },
+                    { name: "SwipeManager", location: "App", main: "SwipeManager" },
+                    { name: "Config", location: "App", main: "Config" },
+                    { name: "PagesLayoutManager", location: "App", main: "PagesLayoutManager" },                    
+                    { name: "UIListener", location: "App", main: "UIListener" },
+                    { name: "dojo", location: "dojo", main: "dojo" },                   
+                    { name: "dojox", location: "dojox"},
+                    { name: "dijit", location: "dijit", main: "dijit" }
+                ]
+            };
+        </script>
+
+        <script type="text/javascript" src="cordova.js"></script>
+        <script src="js/overthrow-detect.js"></script>
+        <script src="js/overthrow-polyfill.js"></script>
+        <script src="js/overthrow-toss.js"></script>
+        <script src="js/overthrow-init.js"></script>
+        <script src="js/anchorscroll.overthrow.js"></script>
+        <script src="js/dojo/dojo.js"></script>
+
+        <script type="text/javascript">
+
+            document.addEventListener("deviceready", onDeviceReady, false);
+
+            function onDeviceReady() {
+
+                require(["dojox/mobile", "dojox/mobile/parser", "dojox/mobile/deviceTheme", 
+                "dojox/mobile/compat", "PagesLayoutManager", "UIListener", "Bootstrap"]);
+                    
+            }
+
+        </script>
+        
+        <title>Pigmalion Studios Phonegap Example</title>
+
+    </head>
+
+    <body>
+
+        <div id="mainView" class="mainView">
+            <div class="header color_main" id="floatHeader">
+
+                <div class="menuBar">
+                    <img src="images/logo_pigmalion_transparencia.png" class="logo">
+                    
+                    <div class="spinner_box">
+                        <img id="spinner" src="images/sync.png" class="spinner_header">
+                    </div>
+                </div>  
+
+                <div id="swipeableTabs" class="menu">
+
+                    <div id="1001" class="tab" style="opacity: 1">MAIN</div>
+                    <div class="tabSeparator"></div>
+                    <div id="1002" class="tab">NEWS</div>                   
+                    <div class="tabSeparator"></div>
+                    <div id="1003" class="tab">POPULAR</div>
+                    <div class="tabSeparator"></div>
+                    <div id="1004" class="tab">FAVORITES</div>
+                    <div class="tabSeparator"></div>
+                    <div id="1005" class="tab">CONFIGURATION</div>
+                    <div class="tabSeparator"></div>
+                    <div id="1006" class="tab">ABOUT...</div>
+
+                    <!-- UNCOMMENT THIS TO GET MORE TABS; CHECK ALSO MIN_TAB_ID, MAX_TAB_ID, TABS_NUMBER AND HEADER_STYLES IN CONFIG.JS
+                    <div id="1007" class="tab">OTHER APPS</div>
+                    <div class="tabSeparator"></div>
+                    <div id="1008" class="tab">SOCIAL</div>
+                    <div class="tabSeparator"></div>
+                    <div id="1009" class="tab">FRIENDS</div>
+                    -->
+
+                </div>
+                <div id="currTabSelected" class="tab_underline"></div>
+
+                
+            </div>
+            
+            <div id="pages" class="pages">
+
+                <!--PAGE-->
+                <div id="page_main" class="page overthrow">
+                    Main Content
+
+                    <br>
+
+                    <div class="container">
+                        Item 1
+                    </div>
+                    
+                    <div class="decoration"></div>
+                         <div class="container">
+                        Item 2
+                    </div>
+                    
+                    <div class="decoration"></div>
+
+                    <div class="container">
+                        Item 3
+                    </div>
+                    
+                    <div class="decoration"></div>
+
+                    <div class="container">
+                        Item 4
+                    </div>
+                    
+                    <div class="decoration"></div>
+
+                    <div class="container">
+                        Item 5
+                    </div>
+                    
+                    <div class="decoration"></div>
+
+                    <div class="container">
+                        Item 6
+                    </div>
+                    
+                    <div class="decoration"></div>
+
+                    <div class="container">
+                        Item 7
+                    </div>
+                    
+                    <div class="decoration"></div>
+                         <div class="container">
+                        Item 8
+                    </div>
+                    
+                    <div class="decoration"></div>
+
+                    <div class="container">
+                        Item 9
+                    </div>
+                    
+                    <div class="decoration"></div>
+
+                    <div class="container">
+                        Item 10
+                    </div>
+                    
+                    <div class="decoration"></div>
+
+                    <div class="container">
+                        Item 11
+                    </div>
+                    
+                    <div class="decoration"></div>
+
+                    <div class="container">
+                        Item 12
+                    </div>
+
+                    <div class="decoration"></div>
+
+                </div>
+
+                <!--PAGE-->
+                <div id="page_news" class="page overthrow">
+                    News Content
+                    <br>
+                    <div id="detail_btn_news">
+                        Go To Detail View
+                    </div>
+                </div>
+
+                <!--PAGE-->
+                <div id="page_popular" class="page overthrow">
+                    Popular Content
+                    <br>
+                    <div id="detail_btn_popular">
+                        Go To Detail View
+                    </div>                    
+                </div>
+
+                <!--PAGE-->
+                <div id="page_favorites" class="page overthrow">
+                    Favorites Content
+                    <br>
+                    <div id="detail_btn_favorites">
+                        Go To Detail View
+                    </div>
+                </div>
+
+                <!--PAGE-->
+                <div id="page_config" class="page overthrow">
+
+                    <div class="config_item">
+
+                        <div class="config_leftItem1">
+                            Use Wi-Fi
+                        </div>
+                       
+                        <div class="switchWidgetsConfig">
+                            <div id="switchWifi" data-dojo-type="dojox.mobile.Switch" value="off" leftLabel="SI" rightLabel="NO"></div>
+                        </div>
+                    </div>
+
+                    <div class="decoration"></div>
+
+                    <div class="config_item">
+                        <div class="config_leftItem1">
+                            Use 3G/4G Network
+                        </div>
+                        <div class="switchWidgetsConfig">
+                            <div id="switch3G" data-dojo-type="dojox.mobile.Switch" value="off" leftLabel="SI" rightLabel="NO"></div>
+                        </div>
+                    </div>
+
+                    <div class="decoration"></div>
+
+                    <div class="config_item">
+                        <div class="config_leftItem2">
+                            Enable Push Notifications
+                        </div>
+                        <div class="switchWidgetsConfig">
+                            <div id="switchNotificaciones" data-dojo-type="dojox.mobile.Switch" value="off" leftLabel="SI" rightLabel="NO"></div>
+                        </div>
+                    </div>
+
+                    <div class="decoration"></div>
+
+                </div>
+
+
+                <!--PAGE-->
+               <div id="page_about" class="page overthrow">
+                   <div class="detail">
+
+                        This Phonegap + Dojo demo app is intended to be the starting point for any project that needs swipeable tabs. It has a Google`s Play Store look and feel and can be configured to allow more or less tabs.
+
+                        <br>
+                        <br>
+                        <div class="poweredBy">
+                            Developed by Gustavo Gramajo for <a style="color:#003756;" href="http://www.pigmalionstudios.com/">Pigmalion Studios</a>.
+                        </div>
+
+                    </div>
+
+                    <div class="centeredTitle color_about" style="height: 46px;">
+                        Want to see this framework in action for real in a published app? Check <a href="https://play.google.com/store/apps/details?id=ar.gob.educarnoticias&hl=es_419">here</a> and <a href="https://itunes.apple.com/us/app/educ.ar-noticias/id896186536?l=es&mt=8">here</a>
+                    </div>
+
+                </div>
+
+                    
+            </div>
+
+
+        </div> 
+        <!-- LISTVIEW ENDS HERE -->
+                       
+                
+        <!-- DETAIL -->
+        <div id="detail" style="display: none;">
+
+            <div id="header_detail" style="height: 40px;">
+
+                <img id="backBtn" src="images/back.png" style="position: fixed;
+                left:0px;
+                top: 0px;
+                height: 40px;
+                -webkit-tap-highlight-color: rgba(0,0,0,0.2) !important;">        
+                <img id="shareBtn" src="images/share.png" style="position: fixed;
+                right: 0px;
+                top: 0px;
+                height: 40px;
+                -webkit-tap-highlight-color: rgba(0,0,0,0.2) !important;">
+                
+            </div>
+
+            <div id="detail_body" class="detail">
+                Here goes your detailed data
+            </div>
+
+        </div>
+
+    </body>
+</html>
