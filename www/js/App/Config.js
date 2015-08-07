@@ -114,7 +114,6 @@ define(["dojo/ready", "dojo/dom-construct", "dojo/dom", "dojo/dom-attr",
 			FAVS_TAB_ID: 1005,
 			MIN_TAB_ID: 1001,
             MAX_TAB_ID: 1006,
-            TABS_NUMBER: 6,
             HEADER_STYLES: {"1001" : "color_main", "1002" : "color_news", "1003" : "color_popular", 
             "1004" : "color_favorites", "1005" : "color_configuration", "1006" : "color_about"
         	/*, "1007" : "color_about", "1008" : "color_about", "1009" : "color_about"*/},

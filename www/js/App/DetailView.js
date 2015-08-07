@@ -21,7 +21,7 @@ define(["dojo/on", "dojo/dom", "dojo/dom-attr", "dojo/dom-class", "Utilities", "
 				}
 
 				Utilities.show("detail", showDetail);
-				Utilities.show("mainView", !showDetail);
+				Utilities.show("master", !showDetail);
 
 				listaFeedsVisible = !showDetail;
 				

@@ -1,13 +1,8 @@
 define(["dojo/ready",
-		"dojo/dom",
-		"dojo/on",
 		"Config",
-		"UIListener",
-		"Utilities",
 		"SwipeManager",
 		"PagesLayoutManager"
-		], function(ready, dom, on, Config, UIListener, 
-			Utilities, SwipeManager, PagesLayoutManager) {
+		], function(ready, Config, SwipeManager, PagesLayoutManager) {
 			
 			SwipeManager.setPagesLayoutManager(PagesLayoutManager);			
 						

@@ -21,27 +21,27 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
         var remainingOffset = 0;
         var swipe_Left;
         var MAX_SWIPE_OFFSET = -window.innerWidth * (Config.MAX_TAB_ID - Config.MIN_TAB_ID);
+        var TABS_NUMBER = Config.MAX_TAB_ID - Config.MIN_TAB_ID + 1;
+        var TAB_WIDTH_OFFSET = 29;
 
         ready(function () {
+            var page_width = window.innerWidth + "px";
 
-            if (Config.IS_ANDROID() || Config.IS_BB10())
+            if (!Config.IS_IOS()) {
                 setMovementInfo();
+            }
 
             pages = dom.byId("pages");
             swipeableTabs = dom.byId("swipeableTabs");
             prevSelectedTabId = Config.MIN_TAB_ID;
 
-
-            var page_noticias = dom.byId("page_news");
-            var page_width = window.innerWidth + "px";
-
             Utilities.setProperty("page_main", "width", page_width);
-            Utilities.setProperty(page_noticias, "width", page_width);
+            Utilities.setProperty("page_news", "width", page_width);
             Utilities.setProperty("page_popular", "width", page_width);
             Utilities.setProperty("page_favorites", "width", page_width);
             Utilities.setProperty("page_config", "width", page_width);
             Utilities.setProperty("page_about", "width", page_width);
-            Utilities.setProperty(pages, "width", (window.innerWidth * (Config.TABS_NUMBER + 1)) + "px");
+            Utilities.setProperty(pages, "width", (window.innerWidth * (TABS_NUMBER + 1)) + "px");
 
             on(swipeableTabs, "click", tabSelected);
             on(pages, "touchstart", touchstartListener);
@@ -75,11 +75,11 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
                 currTotalWidth += parseInt(widthCurrNode);
 
                 if (currTotalWidth > window.innerWidth) {
+
                     isBeyondMaxOffset = true;
                     currNode = children[j + 4];
                     lastPageFirstTabId = currNode.id;
                     maxOffset = -1 * (menuTotalWidth - currTotalWidth);
-
 
                 } else { 
                     --j; 
@@ -96,7 +96,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
                 var currTab = dom.byId(tabID + "");
                 var tabWidth = Utilities.getPropertyWithoutPX(currTab, "width");
 
-                return parseInt(tabWidth) + 29;   
+                return parseInt(tabWidth) + TAB_WIDTH_OFFSET;   
             }
             
             return 0;
