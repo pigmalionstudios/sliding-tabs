@@ -9,6 +9,9 @@
     <content src="index.html" />
     <access origin="*" />
 
+	<preference name="AutoHideSplashScreen" value="false" />
+    <preference name="SplashScreenDelay" value="5000" />
     <preference name="DisallowOverscroll" value="true" />
 	<preference name="orientation" value="portrait" />
+
 </widget>

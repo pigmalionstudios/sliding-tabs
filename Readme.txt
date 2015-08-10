@@ -6,5 +6,6 @@ Esta demo cuenta con las siguientes caracteristicas principales:
 - Optimizado para iOS, Android y Blackberry 10
 - Uso de Dojo (sin widgets)
 - Arquitectura Master-Detail
+- Cordova version: 4.1.2
 
 Mas detalles en http://pigmalionstudios.github.io/jekyll/update/2015/08/06/phonega-sliding-tabs.html
