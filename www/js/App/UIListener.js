@@ -30,16 +30,16 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojo/query", "dojo/dom-attr", "dij
 
 	function setupSwitch(active, nodeID) {
 
-		if (active)
+		if (active) {
 			registry.byId(nodeID).set("value", "on");
-		else
+		}
+		else {
 			registry.byId(nodeID).set("value", "off");
+		}
 
 	}
 
 	function setupSwitches() {
-
-
 		setupSwitch(true, "switch3G");
 		setupSwitch(false, "switchWifi");
 		setupSwitch(true, "switchNotificaciones");

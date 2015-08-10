@@ -1,7 +1,7 @@
 define(["dojo/dom", "Utilities"], 
 	function(dom, Utilities) {
 		var currTabID;
-		var currHeaderStyle = "1001";
+		var currHeaderStyle = "color_main";
 		var ABOUT_TAB_ID = 1006;
 		var FAVS_TAB_ID = 1005;
 		var HEADER_STYLES = {"1001" : "color_main", "1002" : "color_news", "1003" : "color_popular", 
