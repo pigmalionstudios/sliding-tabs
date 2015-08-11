@@ -1,0 +1,33 @@
+Node version: v0.10.33
+
+Cordova version: 4.1.2
+
+Config.xml file: 
+
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.pigmalionstudios.phonegap" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Phonegap Basic Project</name>
+    <description>        
+    </description>
+    <author email="gustavo@pigmalionstudios.com" href="http://www.pigmalionstudios.com.ar">
+        Pigmalion Studios Mobile Team
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+
+    <preference name="DisallowOverscroll" value="true" />
+	<preference name="orientation" value="portrait" />
+</widget>
+
+
+Plugins: 
+
+org.apache.cordova.device,org.apache.cordova.splashscreen
+
+Error retrieving Android platform information: Error: android: Command failed with exit code ENOENT
+
+iOS platform:
+
+Xcode 6.4
+Build version 6E35b
+
