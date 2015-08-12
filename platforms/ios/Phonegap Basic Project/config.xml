@@ -22,6 +22,9 @@
     <feature name="Device">
         <param name="ios-package" value="CDVDevice" />
     </feature>
+    <feature name="Notification">
+        <param name="ios-package" value="CDVNotification" />
+    </feature>
     <feature name="SplashScreen">
         <param name="ios-package" value="CDVSplashScreen" />
         <param name="onload" value="true" />
@@ -34,5 +37,8 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
+    <preference name="AutoHideSplashScreen" value="false" />
+    <preference name="SplashScreenDelay" value="5000" />
     <preference name="DisallowOverscroll" value="true" />
+    <preference name="orientation" value="portrait" />
 </widget>

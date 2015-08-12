@@ -1,8 +1,8 @@
-2015-07-23 11:44:39.497 Phonegap Basic Project[94774:781358] DiskCookieStorage changing policy from 2 to 0, cookie file: file:///Users/ariel/Library/Developer/CoreSimulator/Devices/E3BE0D26-D015-4CCB-ACDA-D6D4AE707A76/data/Containers/Data/Application/83B4BEDA-02DE-400A-8AB6-D1DBABAB39B7/Library/Cookies/Cookies.binarycookies
-2015-07-23 11:44:40.671 Phonegap Basic Project[94774:781358] Apache Cordova native platform version 3.7.0 is starting.
-2015-07-23 11:44:40.688 Phonegap Basic Project[94774:781358] Multi-tasking -> Device: YES, App: YES
-2015-07-23 11:44:40.746 Phonegap Basic Project[94774:781358] Unlimited access to network resources
-2015-07-23 11:44:40.772 Phonegap Basic Project[94774:781358] 
+2015-08-12 14:04:33.919 Phonegap Basic Project[57361:977626] DiskCookieStorage changing policy from 2 to 0, cookie file: file:///Users/ariel/Library/Developer/CoreSimulator/Devices/E3BE0D26-D015-4CCB-ACDA-D6D4AE707A76/data/Containers/Data/Application/8959DD72-F16B-44AC-BA7A-54CECC9CD600/Library/Cookies/Cookies.binarycookies
+2015-08-12 14:04:34.128 Phonegap Basic Project[57361:977626] Apache Cordova native platform version 3.7.0 is starting.
+2015-08-12 14:04:34.128 Phonegap Basic Project[57361:977626] Multi-tasking -> Device: YES, App: YES
+2015-08-12 14:04:34.142 Phonegap Basic Project[57361:977626] Unlimited access to network resources
+2015-08-12 14:04:34.154 Phonegap Basic Project[57361:977626] 
 
 Started backup to iCloud! Please be careful.
 Your application might be rejected by Apple if you store too much data.
@@ -10,16 +10,21 @@ For more information please read "iOS Data Storage Guidelines" at:
 https://developer.apple.com/icloud/documentation/data-storage/
 To disable web storage backup to iCloud, set the BackupWebStorage preference to "local" in the Cordova config.xml file
 
-2015-07-23 11:44:43.178 Phonegap Basic Project[94774:781358] [CDVTimer][splashscreen] 825.557053ms
-2015-07-23 11:44:43.178 Phonegap Basic Project[94774:781358] [CDVTimer][TotalPluginStartup] 825.784981ms
-2015-07-23 11:44:44.061 Phonegap Basic Project[94774:781358] Resetting plugins due to page load.
-2015-07-23 11:44:44.694 Phonegap Basic Project[94774:781358] Finished load of: file:///Users/ariel/Library/Developer/CoreSimulator/Devices/E3BE0D26-D015-4CCB-ACDA-D6D4AE707A76/data/Containers/Bundle/Application/0D4C89FB-8C08-4415-89E1-0E6A51F870D4/Phonegap%20Basic%20Project.app/www/index.html
-2015-07-23 11:44:45.009 Phonegap Basic Project[94774:781358] THREAD WARNING: ['Device'] took '15.818115' ms. Plugin should use a background thread.
-2015-07-23 14:03:41.261 Phonegap Basic Project[12243:842133] DiskCookieStorage changing policy from 2 to 0, cookie file: file:///Users/ariel/Library/Developer/CoreSimulator/Devices/E3BE0D26-D015-4CCB-ACDA-D6D4AE707A76/data/Containers/Data/Application/0C65D3CC-3287-4AA3-AB06-7ECE5A820799/Library/Cookies/Cookies.binarycookies
-2015-07-23 14:03:41.638 Phonegap Basic Project[12243:842133] Apache Cordova native platform version 3.7.0 is starting.
-2015-07-23 14:03:41.638 Phonegap Basic Project[12243:842133] Multi-tasking -> Device: YES, App: YES
-2015-07-23 14:03:41.668 Phonegap Basic Project[12243:842133] Unlimited access to network resources
-2015-07-23 14:03:41.672 Phonegap Basic Project[12243:842133] 
+2015-08-12 14:04:34.388 Phonegap Basic Project[57361:977626] [CDVTimer][splashscreen] 141.168952ms
+2015-08-12 14:04:34.388 Phonegap Basic Project[57361:977626] [CDVTimer][TotalPluginStartup] 141.564012ms
+2015-08-12 14:04:34.649 Phonegap Basic Project[57361:977626] Resetting plugins due to page load.
+2015-08-12 14:04:35.112 Phonegap Basic Project[57361:977626] Finished load of: file:///Users/ariel/Library/Developer/CoreSimulator/Devices/E3BE0D26-D015-4CCB-ACDA-D6D4AE707A76/data/Containers/Bundle/Application/01CCE6B0-F940-478B-AD58-1712E87F0947/Phonegap%20Basic%20Project.app/www/index.html
+2015-08-12 14:09:34.613 Phonegap Basic Project[57361:977626] Resetting plugins due to page load.
+2015-08-12 14:09:34.857 Phonegap Basic Project[57361:977626] Finished load of: file:///Users/ariel/Library/Developer/CoreSimulator/Devices/E3BE0D26-D015-4CCB-ACDA-D6D4AE707A76/data/Containers/Bundle/Application/01CCE6B0-F940-478B-AD58-1712E87F0947/Phonegap%20Basic%20Project.app/www/index.html
+2015-08-12 14:19:53.836 Phonegap Basic Project[57361:977626] Resetting plugins due to page load.
+2015-08-12 14:19:54.012 Phonegap Basic Project[57361:977626] Finished load of: file:///Users/ariel/Library/Developer/CoreSimulator/Devices/E3BE0D26-D015-4CCB-ACDA-D6D4AE707A76/data/Containers/Bundle/Application/01CCE6B0-F940-478B-AD58-1712E87F0947/Phonegap%20Basic%20Project.app/www/index.html
+2015-08-12 14:21:15.685 Phonegap Basic Project[57361:977626] Resetting plugins due to page load.
+2015-08-12 14:21:15.828 Phonegap Basic Project[57361:977626] Finished load of: file:///Users/ariel/Library/Developer/CoreSimulator/Devices/E3BE0D26-D015-4CCB-ACDA-D6D4AE707A76/data/Containers/Bundle/Application/01CCE6B0-F940-478B-AD58-1712E87F0947/Phonegap%20Basic%20Project.app/www/index.html
+2015-08-12 14:26:04.787 Phonegap Basic Project[70976:997169] DiskCookieStorage changing policy from 2 to 0, cookie file: file:///Users/ariel/Library/Developer/CoreSimulator/Devices/E3BE0D26-D015-4CCB-ACDA-D6D4AE707A76/data/Containers/Data/Application/13D0E661-5E5D-400F-B522-0555F251F5D6/Library/Cookies/Cookies.binarycookies
+2015-08-12 14:26:04.977 Phonegap Basic Project[70976:997169] Apache Cordova native platform version 3.7.0 is starting.
+2015-08-12 14:26:04.978 Phonegap Basic Project[70976:997169] Multi-tasking -> Device: YES, App: YES
+2015-08-12 14:26:04.994 Phonegap Basic Project[70976:997169] Unlimited access to network resources
+2015-08-12 14:26:05.012 Phonegap Basic Project[70976:997169] 
 
 Started backup to iCloud! Please be careful.
 Your application might be rejected by Apple if you store too much data.
@@ -27,7 +32,55 @@ For more information please read "iOS Data Storage Guidelines" at:
 https://developer.apple.com/icloud/documentation/data-storage/
 To disable web storage backup to iCloud, set the BackupWebStorage preference to "local" in the Cordova config.xml file
 
-2015-07-23 14:03:42.112 Phonegap Basic Project[12243:842133] [CDVTimer][splashscreen] 298.213005ms
-2015-07-23 14:03:42.112 Phonegap Basic Project[12243:842133] [CDVTimer][TotalPluginStartup] 298.643947ms
-2015-07-23 14:03:42.927 Phonegap Basic Project[12243:842133] Resetting plugins due to page load.
-2015-07-23 14:05:00.077 Phonegap Basic Project[12243:842133] Finished load of: file:///Users/ariel/Library/Developer/CoreSimulator/Devices/E3BE0D26-D015-4CCB-ACDA-D6D4AE707A76/data/Containers/Bundle/Application/7C0BC40D-23CC-4492-BB94-5A8E070CF61C/Phonegap%20Basic%20Project.app/www/index.html
+2015-08-12 14:26:05.301 Phonegap Basic Project[70976:997169] [CDVTimer][splashscreen] 153.883994ms
+2015-08-12 14:26:05.302 Phonegap Basic Project[70976:997169] [CDVTimer][TotalPluginStartup] 154.306948ms
+2015-08-12 14:26:05.528 Phonegap Basic Project[70976:997169] Resetting plugins due to page load.
+2015-08-12 14:26:05.851 Phonegap Basic Project[70976:997169] Finished load of: file:///Users/ariel/Library/Developer/CoreSimulator/Devices/E3BE0D26-D015-4CCB-ACDA-D6D4AE707A76/data/Containers/Bundle/Application/9830DC0E-BA9C-49CF-AC4F-7CA210EA1872/Phonegap%20Basic%20Project.app/www/index.html
+2015-08-12 15:05:07.906 Phonegap Basic Project[84712:1018284] DiskCookieStorage changing policy from 2 to 0, cookie file: file:///Users/ariel/Library/Developer/CoreSimulator/Devices/E3BE0D26-D015-4CCB-ACDA-D6D4AE707A76/data/Containers/Data/Application/49D6B20C-92DE-4787-BF30-414C17E11D7E/Library/Cookies/Cookies.binarycookies
+2015-08-12 15:05:08.390 Phonegap Basic Project[84712:1018284] Apache Cordova native platform version 3.7.0 is starting.
+2015-08-12 15:05:08.391 Phonegap Basic Project[84712:1018284] Multi-tasking -> Device: YES, App: YES
+2015-08-12 15:05:08.528 Phonegap Basic Project[84712:1018284] Unlimited access to network resources
+2015-08-12 15:05:08.558 Phonegap Basic Project[84712:1018284] 
+
+Started backup to iCloud! Please be careful.
+Your application might be rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines" at:
+https://developer.apple.com/icloud/documentation/data-storage/
+To disable web storage backup to iCloud, set the BackupWebStorage preference to "local" in the Cordova config.xml file
+
+2015-08-12 15:05:08.729 Phonegap Basic Project[84712:1018284] [CDVTimer][splashscreen] 20.179033ms
+2015-08-12 15:05:08.730 Phonegap Basic Project[84712:1018284] [CDVTimer][TotalPluginStartup] 20.621002ms
+2015-08-12 15:05:08.790 Phonegap Basic Project[84712:1018284] Resetting plugins due to page load.
+2015-08-12 15:05:10.009 Phonegap Basic Project[84712:1018284] Finished load of: file:///Users/ariel/Library/Developer/CoreSimulator/Devices/E3BE0D26-D015-4CCB-ACDA-D6D4AE707A76/data/Containers/Bundle/Application/FB9AC378-D9F7-4FA2-B1FF-3C9182D364D9/Phonegap%20Basic%20Project.app/www/index.html
+2015-08-12 15:08:45.531 Phonegap Basic Project[97822:1032821] DiskCookieStorage changing policy from 2 to 0, cookie file: file:///Users/ariel/Library/Developer/CoreSimulator/Devices/E3BE0D26-D015-4CCB-ACDA-D6D4AE707A76/data/Containers/Data/Application/8F15390A-6010-45BD-BF28-014CFA71E745/Library/Cookies/Cookies.binarycookies
+2015-08-12 15:08:45.670 Phonegap Basic Project[97822:1032821] Apache Cordova native platform version 3.7.0 is starting.
+2015-08-12 15:08:45.671 Phonegap Basic Project[97822:1032821] Multi-tasking -> Device: YES, App: YES
+2015-08-12 15:08:45.691 Phonegap Basic Project[97822:1032821] Unlimited access to network resources
+2015-08-12 15:08:45.710 Phonegap Basic Project[97822:1032821] 
+
+Started backup to iCloud! Please be careful.
+Your application might be rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines" at:
+https://developer.apple.com/icloud/documentation/data-storage/
+To disable web storage backup to iCloud, set the BackupWebStorage preference to "local" in the Cordova config.xml file
+
+2015-08-12 15:08:45.922 Phonegap Basic Project[97822:1032821] [CDVTimer][splashscreen] 134.950042ms
+2015-08-12 15:08:45.922 Phonegap Basic Project[97822:1032821] [CDVTimer][TotalPluginStartup] 135.176003ms
+2015-08-12 15:08:46.094 Phonegap Basic Project[97822:1032821] Resetting plugins due to page load.
+2015-08-12 15:08:46.357 Phonegap Basic Project[97822:1032821] Finished load of: file:///Users/ariel/Library/Developer/CoreSimulator/Devices/E3BE0D26-D015-4CCB-ACDA-D6D4AE707A76/data/Containers/Bundle/Application/5A42F02E-6A31-4E75-BF0F-9352B5405D95/Phonegap%20Basic%20Project.app/www/index.html
+2015-08-12 15:50:56.175 Phonegap Basic Project[11943:1054985] DiskCookieStorage changing policy from 2 to 0, cookie file: file:///Users/ariel/Library/Developer/CoreSimulator/Devices/E3BE0D26-D015-4CCB-ACDA-D6D4AE707A76/data/Containers/Data/Application/B8D584BE-9FE8-4A84-A8E4-157884B0EE17/Library/Cookies/Cookies.binarycookies
+2015-08-12 15:50:56.612 Phonegap Basic Project[11943:1054985] Apache Cordova native platform version 3.7.0 is starting.
+2015-08-12 15:50:56.613 Phonegap Basic Project[11943:1054985] Multi-tasking -> Device: YES, App: YES
+2015-08-12 15:50:56.666 Phonegap Basic Project[11943:1054985] Unlimited access to network resources
+2015-08-12 15:50:56.711 Phonegap Basic Project[11943:1054985] 
+
+Started backup to iCloud! Please be careful.
+Your application might be rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines" at:
+https://developer.apple.com/icloud/documentation/data-storage/
+To disable web storage backup to iCloud, set the BackupWebStorage preference to "local" in the Cordova config.xml file
+
+2015-08-12 15:50:57.222 Phonegap Basic Project[11943:1054985] [CDVTimer][splashscreen] 398.977041ms
+2015-08-12 15:50:57.222 Phonegap Basic Project[11943:1054985] [CDVTimer][TotalPluginStartup] 399.177015ms
+2015-08-12 15:50:57.629 Phonegap Basic Project[11943:1054985] Resetting plugins due to page load.
+2015-08-12 15:50:58.646 Phonegap Basic Project[11943:1054985] Finished load of: file:///Users/ariel/Library/Developer/CoreSimulator/Devices/E3BE0D26-D015-4CCB-ACDA-D6D4AE707A76/data/Containers/Bundle/Application/ACCF1D73-81A1-45C8-AB76-D97A9888F570/Phonegap%20Basic%20Project.app/www/index.html
