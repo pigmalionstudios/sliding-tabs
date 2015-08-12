@@ -16,7 +16,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
         var ViewTransitionListener, PagesLayoutManager;
         var overscrolling;
         var movInfo = {};
-        var swipeableTabs;
+        var swipeableTabs, selectableTabs;
         var prevSelectedTabId;
         var menuTotalWidth = -1;
         var tabsMaxOffset = -1;
@@ -26,16 +26,17 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
         var MAX_SWIPE_OFFSET, MIN_TAB_ID, MAX_TAB_ID;
         var TAB_WIDTH_OFFSET = 29;
         var MIN_TAB_ID_OFFSET = 30;
-        
+
         ready(function () {
             var page_width = window.innerWidth + "px";
             var pages_array, tabs_array, firstTab, lastTab;
 
             pages = dom.byId("pages");
             swipeableTabs = dom.byId("swipeableTabs");
+            selectableTabs = dom.byId("selectableTabs");
 
             pages_array = query(pages).children();
-            tabs_array = query(swipeableTabs).children(".tab");
+            tabs_array = query(selectableTabs).children(".tab");
 
             if (pages_array.length == tabs_array.length) {
 
@@ -58,7 +59,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
 
                 Utilities.setProperty(pages, "width", (window.innerWidth * (tabs_array.length + 1)) + "px");
 
-                on(swipeableTabs, "click", tabSelected);
+                on(selectableTabs, "click", tabSelected);
                 on(swipeableTabs, "touchstart", touchstartListener_Tabs);
                 on(swipeableTabs, "touchmove", touchMoveListener_Tabs);
                 on(swipeableTabs, "touchend", touchEndListener_Tabs);
@@ -80,7 +81,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
         });
 
         function setMenuWidth() {
-            var children = swipeableTabs.children;
+            var children = selectableTabs.children;
             var childrenCount = children.length;
             var currNode;
             var widthCurrNode;
@@ -96,7 +97,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
                 menuTotalWidth += widthCurrNode;
             }
 
-            Utilities.setProperty(swipeableTabs, "width", menuTotalWidth + "px");
+            Utilities.setProperty(selectableTabs, "width", menuTotalWidth + "px");
        
             while (j >= 0 && !isBeyondMaxOffset) {
                 currNode = children[j];
@@ -222,7 +223,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
                                  SwipeManager.swipeRight(TRANSITION_TIME, distanceBetweenTabs);
                 }
 
-                Utilities.setProperty("currTabSelected", "left", firstTabSelected ? "0px" : 35 + remainingOffset + "px");
+                Utilities.setProperty("currTabSelected", "left", firstTabSelected ? "0px" : (35 + remainingOffset - currentX_OffsetTabs) + "px");
                 prevSelectedTabId = tabId;
                 VTListener.viewTransitioned(tabId);
 
@@ -232,7 +233,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
         function touchstartListener_Tabs(evt) {
             startDrag_X_Tabs = evt.clientX || evt.pageX;
 
-                            console.log("startDrag_X_Tabs (x): " + startDrag_X_Tabs);
+                            //console.log("startDrag_X_Tabs (x): " + startDrag_X_Tabs);
 
         }
 
@@ -303,6 +304,13 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
             var diffX = startDrag_X_Tabs - endDrag_X;
             
             currentX_OffsetTabsDragging -= diffX;
+
+            if (currentX_OffsetTabsDragging > 0) {
+                currentX_OffsetTabsDragging = 0;
+            }
+
+                       // console.log("touchEndListener_Tabs (currentX_OffsetTabsDragging): " + currentX_OffsetTabsDragging);
+
         }
 
         function touchMoveListener_Tabs(evt) {
@@ -311,8 +319,6 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
 
             evt.stopPropagation();
             evt.preventDefault();
-
-                console.log("swipeTabs (diffX): " + diffX);
 
             swipeTabsDragging(currentX_OffsetTabsDragging - diffX, 0, 0);
         }
@@ -443,7 +449,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
 
                 currentX_OffsetTabsDragging = currentX_OffsetTabs;
                 swipeableTabs.style.webkitTransform = "translate3d(" + currentX_OffsetTabs + "px, 0px,0px)";
-
+ 
             }
 
             
@@ -457,7 +463,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
                 swipeableTabs.style.webkitTransitionDuration = duration;
                 swipeableTabs.style.webkitTransform = "translate3d(" + x + "px, 0px,0px)";            
 
-                console.log("swipeTabs (x): " + x);
+                //console.log("swipeTabs (x): " + x);
             }
 
         }
