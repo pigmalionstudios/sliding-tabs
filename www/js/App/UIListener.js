@@ -6,12 +6,12 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojo/query", "dojo/dom-attr", "dij
 	ready(function() {
 
 		setupSwitches();
-		on(dom.byId("backBtn"), "click", exitDetailView);
+		on(dom.byId("backBtn"), "touchstart", exitDetailView);
 		on(dom.byId("page_main"), "click", enterMainDetailView);
 		on(dom.byId("detail_btn_news"), "click", enterNewsDetailView);
 		on(dom.byId("detail_btn_popular"), "click", enterPopularDetailView);
 		on(dom.byId("detail_btn_favorites"), "click", enterFavoritesDetailView);
-		on(dom.byId("spinner"), "click", spinaround);
+		on(dom.byId("spinner"), "touchstart", spinaround);
 
 		DetailView.setUIListener(IntLis);
 		IntLis.detailViewIsActive(false);

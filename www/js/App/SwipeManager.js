@@ -5,6 +5,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
         var startDrag_X, endDrag_X, startDrag_Y, startDrag_X_Tabs;
         var MIN_TOLERANCE_X_FOR_SWIPE = 40;
         var TRANSITION_TIME = 300;
+        var ENABLE_MANUAL_DRAG_ON_TABS = true; //this feature is still in beta, but go ahead and try it!
         var currentX_Offset = 0;
         var currentX_OffsetTabs = 0;
         var currentX_OffsetTabsDragging = 0;
@@ -60,9 +61,13 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
                 Utilities.setProperty(pages, "width", (window.innerWidth * (tabs_array.length + 1)) + "px");
 
                 on(selectableTabs, "click", tabSelected);
-                on(swipeableTabs, "touchstart", touchstartListener_Tabs);
-                on(swipeableTabs, "touchmove", touchMoveListener_Tabs);
-                on(swipeableTabs, "touchend", touchEndListener_Tabs);
+
+                if (ENABLE_MANUAL_DRAG_ON_TABS) {
+                    on(swipeableTabs, "touchstart", touchstartListener_Tabs);
+                    on(swipeableTabs, "touchmove", touchMoveListener_Tabs);
+                    on(swipeableTabs, "touchend", touchEndListener_Tabs);
+                }
+
                 on(pages, "touchstart", touchstartListener);
                 on(pages, "touchmove", Config.IS_IOS() ? touchMoveListener_IOS : touchMoveListener_Android);
                 on(pages, "touchend", Config.IS_IOS() ? touchEndListener_IOS : touchEndListener_Android);
@@ -226,8 +231,9 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
                 prevSelectedTabId = tabId;
                 VTListener.viewTransitioned(tabId);
 
-                domConstruct.place("currTabSelected", "floatHeader");
-
+                if (ENABLE_MANUAL_DRAG_ON_TABS) {
+                    domConstruct.place("currTabSelected", "floatHeader");
+                }
 
             }
         }
