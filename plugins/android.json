@@ -13,11 +13,11 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"SplashScreen\"><param name=\"android-package\" value=\"org.apache.cordova.splashscreen.SplashScreen\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "xml": "<feature name=\"Notification\"><param name=\"android-package\" value=\"org.apache.cordova.dialogs.Notification\" /></feature>",
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"Notification\"><param name=\"android-package\" value=\"org.apache.cordova.dialogs.Notification\" /></feature>",
+                            "xml": "<feature name=\"SplashScreen\"><param name=\"android-package\" value=\"org.apache.cordova.splashscreen.SplashScreen\" /><param name=\"onload\" value=\"true\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -29,10 +29,10 @@
         "org.apache.cordova.device": {
             "PACKAGE_NAME": "com.pigmalionstudios.phonegap"
         },
-        "org.apache.cordova.splashscreen": {
+        "org.apache.cordova.dialogs": {
             "PACKAGE_NAME": "com.pigmalionstudios.phonegap"
         },
-        "org.apache.cordova.dialogs": {
+        "org.apache.cordova.splashscreen": {
             "PACKAGE_NAME": "com.pigmalionstudios.phonegap"
         }
     },

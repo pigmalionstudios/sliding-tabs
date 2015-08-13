@@ -1,6 +1,6 @@
-define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Utilities", "ViewTransitionListener", 
+define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Utilities", "ViewTransitionListener", "PagingManager",
     "dojo/query", "dojo/dom-attr", "dojo/dom-construct", "dojo/NodeList-traverse"],
-    function (ready, dom, on, tap, Config, Utilities, VTListener, query, domAttr, domConstruct) {
+    function (ready, dom, on, tap, Config, Utilities, VTListener, PagingManager, query, domAttr, domConstruct) {
         var pages;
         var startDrag_X, endDrag_X, startDrag_Y, startDrag_X_Tabs;
         var INSTANTANEOUS_TRANSITION_TIME = "0s";
@@ -8,6 +8,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
         var PAGE_TRANSITION_TIME = "0.3s";
         var TAB_TRANSITION_TIME = PAGE_TRANSITION_TIME;
         var ENABLE_MANUAL_DRAG_ON_TABS = true; //this feature is still in beta, but go ahead and try it!
+        var ENABLE_PULL_TO_REFRESH = true;
         var currentX_Offset = 0;
         var currentX_OffsetTabs = 0;
         var currentX_OffsetTabsDragging = 0;
@@ -29,6 +30,10 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
         var MAX_SWIPE_OFFSET, MIN_TAB_ID, MAX_TAB_ID;
         var TAB_WIDTH_OFFSET = 29;
         var MIN_TAB_ID_OFFSET = 30;
+        var DELTA_MIN_PARA_PAGINAR = -40;
+        var evaluateIncludeOverScrollFlag, evaluateScrollDown, evaluateScrollOnDemand;
+        var transformY, overScrollJustStarted;
+        var pedirMasContenido = false;
 
         ready(function () {
             var page_width = window.innerWidth + "px";
@@ -74,6 +79,13 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
                 on(pages, "touchmove", Config.IS_IOS() ? touchMoveListener_IOS : touchMoveListener_Android);
                 on(pages, "touchend", Config.IS_IOS() ? touchEndListener_IOS : touchEndListener_Android);
 
+
+                if (ENABLE_PULL_TO_REFRESH) {
+                    setupPullToRefresh("page_main");
+                } else {
+                    domConstruct.destroy("mensaje_cargando");
+                }
+
             } else {
 
                 navigator.notification.alert(
@@ -86,6 +98,76 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
             }
 
         });
+
+        function setupPullToRefresh(nodeId) {
+            var node = dom.byId(nodeId);
+
+            if (!Config.IS_IOS()) {
+                    setMovementInfo();
+                }
+
+                on(node, "touchend", touchEndListener_OverScrollBottom);
+
+                if (Config.IS_IOS()) {
+                    on(node, "touchmove", touchMoveListener_OverScrollBottom_IOS);
+                    evaluateIncludeOverScrollFlag = function () {};
+                    evaluateScrollDown = function () {};
+                    evaluateScrollOnDemand = function () {};
+                    transformY = function (y) {
+                        return y;
+                    };
+
+                } else {
+                    on(node, "touchmove", touchMoveListener_OverScrollBottom_Android);
+                    on(node, "touchstart", touchstartListener_OverScrollBottom);
+
+                    evaluateIncludeOverScrollFlag = function (evt) {
+                        if (overScrollJustStarted) {
+                            startDrag_Y = evt.clientY || evt.pageY;
+                            overScrollJustStarted = false;
+                        }
+                    };
+
+                    evaluateScrollDown = function () {
+                        swipe(-window.innerWidth, 0, PAGE_TRANSITION_TIME);
+                    };
+                    evaluateScrollOnDemand = function (y) {
+                        swipe(-window.innerWidth, y, 0);
+                    };
+                    transformY = function (y, evt) {
+                        var transformedY;
+
+                        evt.stopPropagation();
+                        evt.preventDefault();
+
+                        if (y <= 0 && y >= -50) { //hasta -33
+
+                            transformedY = (2 / 3) * y;
+
+                        } else if (y < -50 && y >= -140) { //hasta -69
+
+                            transformedY = -13 + (4 / 10) * y;
+
+                        } else if (y < -140 && y >= -230) { //hasta -96
+
+                            transformedY = -27 + (3 / 10) * y;
+
+                        } else if (y < -230 && y >= -380) { //hasta -111
+
+                            transformedY = -68 + (1 / 8) * y;
+
+                        } else {
+
+                            transformedY = -77 + (1 / 10) * y;
+
+                        }
+
+                        console.log("original y: " + y + " - transformedY: " + transformedY);
+
+                        return transformedY;
+                    };
+                }
+        }
 
         function setMenuWidth() {
             var children = selectableTabs.children;
@@ -239,6 +321,109 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
 
             }
         }
+
+        /*OVERSCROLL METHODS*/
+        function touchstartListener_OverScrollBottom() {
+            //console.log("touchstartListener_OverScrollBottom");
+            overScrollJustStarted = true;
+        }
+
+        function touchMoveListener_OverScrollBottom_IOS(evt) {
+            //console.log("touchMoveListener_OverScrollBottom");
+            if (PagingManager.canPage() &&
+                scrollStarted &&
+                (evt.currentTarget.offsetHeight + evt.currentTarget.scrollTop) >= evt.currentTarget.scrollHeight) {
+                //console.log("overscroll!!!!!");
+
+                evaluateIncludeOverScrollFlag(evt);
+
+                //evt.stopPropagation();
+                //evt.preventDefault();
+
+                var endDrag_Y_ = evt.clientY || evt.pageY;
+                var diffY = -1 * (startDrag_Y - endDrag_Y_);
+
+
+                if (diffY <= 0) {
+
+                    var transformedY = transformY(diffY, evt);
+                    evaluateScrollOnDemand(transformedY);
+                    cancelPullUp = true;
+
+                    console.log("transformedY: " + transformedY);
+
+                    if (transformedY < DELTA_MIN_PARA_PAGINAR) {
+                        PagingManager.releaseToPage();
+                        pedirMasContenido = true;
+                    } else {
+                        pedirMasContenido = false;
+                        PagingManager.pullToPage();
+                    }
+                }
+            }
+        }
+
+        function touchEndListener_OverScrollBottom() {
+            //console.log("touchEndListener_OverScrollBottom");
+            if (cancelPullUp) {
+
+                evaluateScrollDown();
+                setTimeout(PagingManager.pullToPage, PAGE_TRANSITION_TIME);
+
+                if (pedirMasContenido) {
+                    //console.log("NEXT PAGE!!!!");
+                    PagingManager.onPagingGesture();
+                    pedirMasContenido = false;
+                }
+
+                cancelPullUp = false;
+            }
+
+        }
+
+        function touchMoveListener_OverScrollBottom_Android(evt) {
+            var overscrollDetected = (evt.currentTarget.offsetHeight + evt.currentTarget.scrollTop) >= evt.currentTarget.scrollHeight;
+/*
+            console.log("-------------touchMoveListener_OverScrollBottom_scrollStarted-------------");
+            console.log("PagingManager.canPage(): " + PagingManager.canPage());
+            console.log("overscrollDetected: " + overscrollDetected);
+                                  console.log("offsetHeight :" + evt.currentTarget.offsetHeight);
+ console.log("scrollTop :" + evt.currentTarget.scrollTop);
+ console.log("scrollHeight :" + evt.currentTarget.scrollHeight);
+ */
+            if (PagingManager.canPage() && overscrollDetected) {
+                setMovementInfo(evt);
+
+                if (overscrolling || movInfo.scrolledDown) {
+
+                    //console.log("OVERSCROLL!");
+
+                    overscrolling = true;
+
+                    if (-movInfo.yDelta <= 0) {
+
+                        var transformedY = transformY(-movInfo.yDelta, evt);
+
+                        evaluateScrollOnDemand(transformedY);
+                        cancelPullUp = true;
+
+                        if (transformedY < DELTA_MIN_PARA_PAGINAR) {
+                            PagingManager.releaseToPage();
+                            pedirMasContenido = true;
+                        } else {
+                            pedirMasContenido = false;
+                            PagingManager.pullToPage();
+                        }
+                    }
+                }
+            }
+
+
+        }
+
+
+       /*OVERSCROLL METHODS*/
+
 
         function touchstartListener(evt) {
             resetTouchFlags(true);
