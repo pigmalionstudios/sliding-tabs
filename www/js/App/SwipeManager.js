@@ -3,8 +3,10 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
     function (ready, dom, on, tap, Config, Utilities, VTListener, query, domAttr, domConstruct) {
         var pages;
         var startDrag_X, endDrag_X, startDrag_Y, startDrag_X_Tabs;
+        var INSTANTANEOUS_TRANSITION_TIME = "0s";
         var MIN_TOLERANCE_X_FOR_SWIPE = 40;
-        var TRANSITION_TIME = 300;
+        var PAGE_TRANSITION_TIME = "0.3s";
+        var TAB_TRANSITION_TIME = PAGE_TRANSITION_TIME;
         var ENABLE_MANUAL_DRAG_ON_TABS = true; //this feature is still in beta, but go ahead and try it!
         var currentX_Offset = 0;
         var currentX_OffsetTabs = 0;
@@ -218,13 +220,13 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
                 }
 
                 distanceBetweenTabs = Math.abs(prevSelectedTabId - tabId);
-                swipeTabs(swipeTotalWidth, TRANSITION_TIME);
+                swipeTabs(swipeTotalWidth, TAB_TRANSITION_TIME);
                 Utilities.setProperty(tabId + "", "opacity", "1");
                 Utilities.setProperty(prevSelectedTabId + "", "opacity", "0.5");
 
                 if (swipeScreenToo) {
-                    swipe_Left ? SwipeManager.swipeLeft(TRANSITION_TIME, distanceBetweenTabs) : 
-                                 SwipeManager.swipeRight(TRANSITION_TIME, distanceBetweenTabs);
+                    swipe_Left ? SwipeManager.swipeLeft(PAGE_TRANSITION_TIME, distanceBetweenTabs) : 
+                                 SwipeManager.swipeRight(PAGE_TRANSITION_TIME, distanceBetweenTabs);
                 }
 
                 Utilities.setProperty("currTabSelected", "left", firstTabSelected ? "0px" : (35 + remainingOffset) + "px");
@@ -347,9 +349,8 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
                 }
 
                 firstTimeTabsAreBeingDragged = false;
-                var duration = "0s";
 
-                swipeableTabs.style.webkitTransitionDuration = duration;
+                swipeableTabs.style.webkitTransitionDuration = INSTANTANEOUS_TRANSITION_TIME;
                 swipeableTabs.style.webkitTransform = "translate3d(" + x + "px, 0px,0px)";            
 
                 //console.log("swipeTabs (x): " + x);
@@ -380,7 +381,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
                     if (!scrollStarted) {
                         evt.stopPropagation();
                         evt.preventDefault();
-                        swipe(currentX_Offset - diffX, 0, 0);
+                        swipe(currentX_Offset - diffX, 0, INSTANTANEOUS_TRANSITION_TIME);
                     }
 
                 }
@@ -396,7 +397,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
                 if (movInfo.swiped) {
                     evt.stopPropagation();
                     evt.preventDefault();
-                    swipe(currentX_Offset - movInfo.xDelta, 0, 0);
+                    swipe(currentX_Offset - movInfo.xDelta, 0, INSTANTANEOUS_TRANSITION_TIME);
                 }
             }
 
@@ -449,11 +450,10 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
             overscrolling = false;
         }
 
-        function swipeTabs(x, speed) {
-            var duration = (speed / 1000).toFixed(1) + "s";
+        function swipeTabs(x) {
             var oldOffset = remainingOffset;
 
-            swipeableTabs.style.webkitTransitionDuration = duration;
+            swipeableTabs.style.webkitTransitionDuration = TAB_TRANSITION_TIME;
             
             if (swipe_Left) {
                  remainingOffset += x;              
@@ -491,12 +491,11 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
         }
 
         function cancelSwipe() {
-            swipe(currentX_Offset, 0, TRANSITION_TIME);
+            swipe(currentX_Offset, 0, PAGE_TRANSITION_TIME);
         }
 
-        function swipe(x, y, speed) {
+        function swipe(x, y, duration) {
             if (x >= MAX_SWIPE_OFFSET && x <= 0) {
-                var duration = (speed / 1000).toFixed(1) + "s";
                 pages.style.webkitTransitionDuration = duration;
                 pages.style.webkitTransform = "translate3d(" + x + "px," + y + "px, 0px)";
             }
@@ -505,7 +504,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
         function swipeLateral(swipeToLeft, time, multiplier) {
 
             if (!time) {
-                time = TRANSITION_TIME;
+                time = PAGE_TRANSITION_TIME;
             }
 
             if (!multiplier) {
