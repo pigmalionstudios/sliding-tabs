@@ -36,6 +36,12 @@ define(["dojo/on",
 			}, 1000);
 		}
 
+
+		//HARDCODED: you need to implement this in order to detect the presence of the last page
+		function lastPageReached() {
+			return page_counter > 15;								
+		}
+
 		var PagingManager = function() {
 
 			return {
@@ -50,34 +56,23 @@ define(["dojo/on",
 				},
 
 				canPage: function() {
-					var canPag = false;
-					
-					if (!nextPageIsLoading) {
-						canPag = true;
-					}			
-
-					return canPag;
+					return !nextPageIsLoading && !lastPageReached();
 				},
 
 				enablePaging: function() {
-					console.log("enablePaging!!!");
+						console.log("enablePaging!!!");
 					resetMessage();
 					nextPageIsLoading = false;
 				},
 
 				nextPage: function() {
 					page_counter++;
+
 					setTimeout(function() {						
-						var isLastPage = page_counter > 15;
-						
 						requestNextPage(); 
-
-						if (!isLastPage) {
-							setMessagePanelStyle(STYLE_LOADING);
-						}
-
-						Utilities.show(pullToRefreshPanelId, !isLastPage);			
-					}, 500);
+						setMessagePanelStyle(STYLE_LOADING);
+						Utilities.show(pullToRefreshPanelId, !lastPageReached());			
+					}, 300);
 
 				},
 
