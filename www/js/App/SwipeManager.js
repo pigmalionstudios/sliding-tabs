@@ -8,7 +8,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
         var PAGE_TRANSITION_TIME = "0.3s";
         var TAB_TRANSITION_TIME = PAGE_TRANSITION_TIME;
         var ENABLE_MANUAL_DRAG_ON_TABS = true; //this feature is still in beta, but go ahead and try it!
-        var ENABLE_PULL_TO_REFRESH = true;
+        var ENABLE_PULL_TO_REFRESH = true; //this feature is still in beta, but go ahead and try it!
         var currentX_Offset = 0;
         var currentX_OffsetTabs = 0;
         var currentX_OffsetTabsDragging = 0;
