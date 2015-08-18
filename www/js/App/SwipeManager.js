@@ -25,13 +25,14 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
         var menuTotalWidth = -1;
         var tabsMaxOffset = -1;
         var maxOffset;
-        var remainingOffset = 0;
+        var currTabSelectedOffsetLeft = 0;
         var swipe_Left;
         var lastManualTabSwipeDistance = 0;
         var MAX_SWIPE_OFFSET, MIN_TAB_ID, MAX_TAB_ID;
         var TAB_WIDTH_OFFSET = 29;
         var MIN_TAB_ID_OFFSET = 30;
         var DELTA_MIN_PARA_PAGINAR = -40;
+        var CURR_SELECTED_TAB_BASE_OFFSET = 35;
         var evaluateIncludeOverScrollFlag, evaluateScrollDown, evaluateScrollOnDemand;
         var transformY, overScrollJustStarted;
         var pagingGestureDetected = false;
@@ -277,7 +278,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
                 }
 
                 if (firstTabSelected) {
-                    swipeTotalWidth = currentX_OffsetTabs;
+                    swipeTotalWidth = currentX_OffsetTabs - currTabSelectedOffsetLeft;
                 } else {
 
                     if (prevSelectedTabId === MIN_TAB_ID) {
@@ -309,7 +310,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
                                  SwipeManager.swipeRight(PAGE_TRANSITION_TIME, distanceBetweenTabs);
                 }
 
-                Utilities.setProperty("currTabSelected", "left", firstTabSelected ? "0px" : (35 + remainingOffset) + "px");
+                setCurrTabSelectedOffsetLeft(firstTabSelected, currTabSelectedOffsetLeft);
                 prevSelectedTabId = tabId;
                 VTListener.viewTransitioned(tabId);
 
@@ -318,6 +319,10 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
                 }
 
             }
+        }
+
+        function setCurrTabSelectedOffsetLeft(firstTabSelected, offset) {
+            Utilities.setProperty("currTabSelected", "left", firstTabSelected ? "0px" : (CURR_SELECTED_TAB_BASE_OFFSET + offset) + "px");
         }
 
         /*OVERSCROLL METHODS*/
@@ -463,9 +468,6 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
         function touchstartListener_Tabs(evt) {
             startDrag_X_Tabs = evt.clientX || evt.pageX;
             firstTimeTabsAreBeingDragged = true;
-
-                            //console.log("startDrag_X_Tabs (x): " + startDrag_X_Tabs);
-
         }
 
         function touchEndListener_Tabs(evt) {
@@ -483,9 +485,6 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
             }
 
             firstTimeTabsAreBeingDragged = false;
-
-                       // console.log("touchEndListener_Tabs (currentX_OffsetTabsDragging): " + currentX_OffsetTabsDragging);
-
         }
 
         function touchMoveListener_Tabs(evt) {
@@ -504,24 +503,23 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
             if (x >= tabsMaxOffset && x <= 0) {
 
                 if (firstTimeTabsAreBeingDragged) {
-                    var firstTabSelected = prevSelectedTabId === MIN_TAB_ID;
 
                     domConstruct.place("currTabSelected", "swipeableTabs");
-                    Utilities.setProperty("currTabSelected", "left", firstTabSelected ? "0px" : (35 + remainingOffset - currentX_OffsetTabs) + "px");
+                    setCurrTabSelectedOffsetLeft(prevSelectedTabId === MIN_TAB_ID, currTabSelectedOffsetLeft - currentX_OffsetTabs);
                     swipeableTabs.style.webkitTransitionDuration = INSTANTANEOUS_TRANSITION_TIME;
+
                 }
 
                 firstTimeTabsAreBeingDragged = false;
-
                 swipeableTabs.style.webkitTransform = "translate3d(" + x + "px, 0px,0px)";            
 
-                //console.log("swipeTabs (x): " + x);
             }
 
         }
 
 
         function touchMoveListener_IOS(evt) {
+
             if (!cancelPullUp) {
 
                 var endDrag_X_ = evt.clientX || evt.pageX;
@@ -548,6 +546,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
 
                 }
             }
+
         }
 
         function touchMoveListener_Android(evt) {
@@ -613,15 +612,15 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
         }
 
         function swipeTabs(x) {
-            var oldOffset = remainingOffset;
+            var oldOffset = currTabSelectedOffsetLeft;
 
             swipeableTabs.style.webkitTransitionDuration = TAB_TRANSITION_TIME;
             
             if (swipe_Left) {
-                remainingOffset += x;              
+                currTabSelectedOffsetLeft += x;              
             } 
             
-            var offsetIsSubZero = remainingOffset <= 0;
+            var offsetIsSubZero = currTabSelectedOffsetLeft <= 0;
             var checkManualTabSlideInLastTabs = (lastManualTabSwipeDistance !== 0) && !offsetIsSubZero;
 
             if (offsetIsSubZero || !swipe_Left || checkManualTabSlideInLastTabs) {
@@ -638,17 +637,17 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
                 }
 
                 if (currentX_OffsetTabs <= maxOffset) {
-                    
+
                     if (swipe_Left) {
-                        remainingOffset -= maxOffset - currentX_OffsetTabs;
+                        currTabSelectedOffsetLeft -= maxOffset - currentX_OffsetTabs;
                     } else {
-                        remainingOffset += maxOffset - currentX_OffsetTabs;
+                        currTabSelectedOffsetLeft += maxOffset - currentX_OffsetTabs;
                     }
                     
                     currentX_OffsetTabs = maxOffset;
 
                 } else {
-                    remainingOffset = 0;
+                    currTabSelectedOffsetLeft = 0;
                 }
 
                 currentX_OffsetTabsDragging = currentX_OffsetTabs;
