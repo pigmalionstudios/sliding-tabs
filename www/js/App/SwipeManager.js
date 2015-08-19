@@ -20,11 +20,10 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
         var ViewTransitionListener, PagesLayoutManager;
         var overscrolling;
         var movInfo = {};
-        var swipeableTabs, selectableTabs, firstTimeTabsAreBeingDragged;
+        var swipeableTabs, selectableTabs, tabsDraggingStarted;
         var prevSelectedTabId;
         var menuTotalWidth = -1;
-        var tabsMaxOffset = -1;
-        var maxOffset;
+        var tabsMaxOffset;
         var currTabSelectedOffsetLeft = 0;
         var swipe_Left;
         var lastManualTabSwipeDistance = 0;
@@ -36,6 +35,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
         var evaluateIncludeOverScrollFlag, evaluateScrollDown, evaluateScrollOnDemand;
         var transformY, overScrollJustStarted;
         var pagingGestureDetected = false;
+        var lastTabSwipeWasTriggeredByTabSelection = true;
 
         ready(function () {
             var page_width = window.innerWidth + "px";
@@ -188,23 +188,9 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
                 }
             }
 
-            maxOffset = -1 * (menuTotalWidth - rightOffsetToPivotTab);
+            tabsMaxOffset = -1 * (menuTotalWidth - rightOffsetToPivotTab);
 
             Utilities.setProperty(selectableTabs, "width", menuTotalWidth + "px");    
-            calculateSwipeableTabsMaxOffset(); 
-        }
-
-        function calculateSwipeableTabsMaxOffset() {
-            var tabIdAux = MIN_TAB_ID;
-            tabsMaxOffset = 0;
-            while (compareTabs(tabIdAux, MAX_TAB_ID, true)) {
-                
-                tabsMaxOffset -= getTabWidth(tabIdAux);
-                ++tabIdAux;
-
-            }
-
-            tabsMaxOffset += MIN_TAB_ID_OFFSET;
         }
 
         function getTabWidth(tabID) {
@@ -301,8 +287,9 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
                 prevSelectedTabId = tabId;
                 VTListener.viewTransitioned(tabId);
 
-                if (ENABLE_MANUAL_DRAG_ON_TABS) {
+                if (ENABLE_MANUAL_DRAG_ON_TABS && !lastTabSwipeWasTriggeredByTabSelection) {
                     domConstruct.place("currTabSelected", "floatHeader");
+                    lastTabSwipeWasTriggeredByTabSelection = true;
                 }
 
             }
@@ -454,7 +441,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
 
         function touchstartListener_Tabs(evt) {
             startDrag_X_Tabs = evt.clientX || evt.pageX;
-            firstTimeTabsAreBeingDragged = true;
+            tabsDraggingStarted = true;
         }
 
         function touchEndListener_Tabs(evt) {
@@ -471,7 +458,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
                 lastManualTabSwipeDistance = diffX;
             }
 
-            firstTimeTabsAreBeingDragged = false;
+            tabsDraggingStarted = false;
         }
 
         function touchMoveListener_Tabs(evt) {
@@ -489,15 +476,16 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
 
             if (x >= tabsMaxOffset && x <= 0) {
 
-                if (firstTimeTabsAreBeingDragged) {
+                if (tabsDraggingStarted && lastTabSwipeWasTriggeredByTabSelection) {
 
                     domConstruct.place("currTabSelected", "swipeableTabs");
                     setCurrTabSelectedOffsetLeft(prevSelectedTabId === MIN_TAB_ID, currTabSelectedOffsetLeft - currentX_OffsetTabs);
                     swipeableTabs.style.webkitTransitionDuration = INSTANTANEOUS_TRANSITION_TIME;
+                    lastTabSwipeWasTriggeredByTabSelection = false;
+                    tabsDraggingStarted = false;
 
                 }
 
-                firstTimeTabsAreBeingDragged = false;
                 swipeableTabs.style.webkitTransform = "translate3d(" + x + "px, 0px,0px)";            
 
             }
@@ -623,15 +611,15 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
 
                 }
 
-                if (currentX_OffsetTabs <= maxOffset) {
+                if (currentX_OffsetTabs <= tabsMaxOffset) {
 
                     if (swipe_Left) {
-                        currTabSelectedOffsetLeft -= maxOffset - currentX_OffsetTabs;
+                        currTabSelectedOffsetLeft -= tabsMaxOffset - currentX_OffsetTabs;
                     } else {
-                        currTabSelectedOffsetLeft += maxOffset - currentX_OffsetTabs;
+                        currTabSelectedOffsetLeft += tabsMaxOffset - currentX_OffsetTabs;
                     }
                     
-                    currentX_OffsetTabs = maxOffset;
+                    currentX_OffsetTabs = tabsMaxOffset;
 
                 } else {
                     currTabSelectedOffsetLeft = 0;
