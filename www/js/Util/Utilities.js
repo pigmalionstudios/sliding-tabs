@@ -159,28 +159,24 @@ define(["dijit/registry",
 						
 						var node = e.srcElement;
 						var nodeName = node.nodeName.toLowerCase();
-						var parentNode;
-						var parentNodeName;
+						var MAX_DEPTH = 3;
+						var anchorFound = false;
+						var currDepth = 1;
+						
+						while (currDepth <= MAX_DEPTH && !anchorFound) {
 
-						if (nodeName === "a") {										
-							Uti.openUrlOnSystemBrowser(node.href);
-						} else {
-							parentNode = node.parentNode;
-							parentNodeName = parentNode.nodeName.toLowerCase();
-
-							if (parentNodeName === "a") {
-								Uti.openUrlOnSystemBrowser(parentNode.href);
+							if (nodeName === "a") {
+								anchorFound = true;									
+								Uti.openUrlOnSystemBrowser(node.href);
 							} else {
-								parentNode = parentNode.parentNode;
-								parentNodeName = parentNode.nodeName.toLowerCase();
+								currDepth++;
+								node = node.parentNode;
+								nodeName = node.nodeName.toLowerCase();
+							}							
 
-								if (parentNodeName === "a") {
-									Uti.openUrlOnSystemBrowser(parentNode.href);
-								}
-							}
 						}
 					}
-					
+
 				};
 			}();
 
