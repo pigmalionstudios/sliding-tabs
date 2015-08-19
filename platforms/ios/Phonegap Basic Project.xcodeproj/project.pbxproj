@@ -44,6 +44,7 @@
 		290559F7AB614361AAB7CAF1 /* CDVNotification.bundle in Resources */ = {isa = PBXBuildFile; fileRef = AB49FAD9FFDE4244AC65ED8B /* CDVNotification.bundle */; };
 		BDB8EE02D2294875BBC6838E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2399394C75624B18974098F7 /* AudioToolbox.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F300D8EE6F244195A50B0A00 /* CDVSplashScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA598443B164C2D93CE6684 /* CDVSplashScreen.m */; };
+		84EC0BA6B24F477F816F2009 /* CDVInAppBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = EBA2F113856C4BC389066C3A /* CDVInAppBrowser.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -117,6 +118,8 @@
 		2399394C75624B18974098F7 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "AudioToolbox.framework"; path = "System/Library/Frameworks/AudioToolbox.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
 		CDA598443B164C2D93CE6684 /* CDVSplashScreen.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVSplashScreen.m"; path = "org.apache.cordova.splashscreen/CDVSplashScreen.m"; sourceTree = "<group>"; fileEncoding = 4; };
 		C851D2103D6242499C116EE6 /* CDVSplashScreen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVSplashScreen.h"; path = "org.apache.cordova.splashscreen/CDVSplashScreen.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		EBA2F113856C4BC389066C3A /* CDVInAppBrowser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVInAppBrowser.m"; path = "org.apache.cordova.inappbrowser/CDVInAppBrowser.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		291AFFF9350D4F8882C24878 /* CDVInAppBrowser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVInAppBrowser.h"; path = "org.apache.cordova.inappbrowser/CDVInAppBrowser.h"; sourceTree = "<group>"; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -224,6 +227,8 @@
 				6CC07DC787E04775944D530D /* CDVNotification.h */,
 				CDA598443B164C2D93CE6684 /* CDVSplashScreen.m */,
 				C851D2103D6242499C116EE6 /* CDVSplashScreen.h */,
+				EBA2F113856C4BC389066C3A /* CDVInAppBrowser.m */,
+				291AFFF9350D4F8882C24878 /* CDVInAppBrowser.h */,
 			);
 			name = Plugins;
 			path = "Phonegap Basic Project/Plugins";
@@ -412,6 +417,7 @@
 				F39ED89373B04BB7B4DD2AF9 /* CDVDevice.m in Sources */,
 				2F27996687F74A0A9ECD975D /* CDVNotification.m in Sources */,
 				F300D8EE6F244195A50B0A00 /* CDVSplashScreen.m in Sources */,
+				84EC0BA6B24F477F816F2009 /* CDVInAppBrowser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
