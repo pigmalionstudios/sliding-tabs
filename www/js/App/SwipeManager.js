@@ -171,39 +171,26 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
 
         function setMenuWidth() {
             var children = selectableTabs.children;
-            var childrenCount = children.length;
             var currNode;
             var widthCurrNode;
-            var j = childrenCount - 1;
-            var isBeyondMaxOffset = false;
-            var currTotalWidth = 0;
+            var j = children.length - 1;
+            var rightOffsetToPivotTab = 0;
 
             menuTotalWidth = 80;
             
-            for (var i = 0; i < childrenCount; ++i) {
-                currNode = children[i];
+            for (; j >= 0; --j) {
+                currNode = children[j];
                 widthCurrNode = getTabWidth(currNode.id);
                 menuTotalWidth += widthCurrNode;
+
+                if (rightOffsetToPivotTab === 0 && menuTotalWidth > window.innerWidth) {
+                    rightOffsetToPivotTab = menuTotalWidth;
+                }
             }
 
-            Utilities.setProperty(selectableTabs, "width", menuTotalWidth + "px");
-       
-            while (j >= 0 && !isBeyondMaxOffset) {
-                currNode = children[j];
-                widthCurrNode = Utilities.getPropertyWithoutPX(currNode, "width");
-                currTotalWidth += parseInt(widthCurrNode);
+            maxOffset = -1 * (menuTotalWidth - rightOffsetToPivotTab);
 
-                if (currTotalWidth > window.innerWidth) {
-
-                    isBeyondMaxOffset = true;
-                    maxOffset = -1 * (menuTotalWidth - currTotalWidth);
-
-                } else { 
-                    --j; 
-                }    
-
-            }
-
+            Utilities.setProperty(selectableTabs, "width", menuTotalWidth + "px");    
             calculateSwipeableTabsMaxOffset(); 
         }
 
