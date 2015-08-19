@@ -153,13 +153,34 @@ define(["dijit/registry",
 						}
 					},
 
-					feedSort: function(feed1, feed2) {
-						var date1 = new Date(feed1.pubDate);
-						var date2 = new Date(feed2.pubDate);
-						var res = date2 - date1;
+					detectAnchorClick: function(e) {
+						e.preventDefault();
+						e.stopPropagation();
+						
+						var node = e.srcElement;
+						var nodeName = node.nodeName.toLowerCase();
+						var parentNode;
+						var parentNodeName;
 
-						return res;	
+						if (nodeName === "a") {										
+							Uti.openUrlOnSystemBrowser(node.href);
+						} else {
+							parentNode = node.parentNode;
+							parentNodeName = parentNode.nodeName.toLowerCase();
+
+							if (parentNodeName === "a") {
+								Uti.openUrlOnSystemBrowser(parentNode.href);
+							} else {
+								parentNode = parentNode.parentNode;
+								parentNodeName = parentNode.nodeName.toLowerCase();
+
+								if (parentNodeName === "a") {
+									Uti.openUrlOnSystemBrowser(parentNode.href);
+								}
+							}
+						}
 					}
+					
 				};
 			}();
 

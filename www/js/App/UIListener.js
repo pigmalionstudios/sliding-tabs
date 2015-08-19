@@ -12,6 +12,8 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojo/query", "dojo/dom-attr", "dij
 		on(dom.byId("detail_btn_popular"), "click", enterPopularDetailView);
 		on(dom.byId("detail_btn_favorites"), "click", enterFavoritesDetailView);
 		on(dom.byId("spinner"), "touchstart", spinaround);
+		on(dom.byId("page_about"), "click", Utilities.detectAnchorClick);
+
 
 		DetailView.setUIListener(IntLis);
 		IntLis.detailViewIsActive(false);
