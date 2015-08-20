@@ -36,6 +36,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
         var transformY, overScrollJustStarted;
         var pagingGestureDetected = false;
         var lastTabSwipeWasTriggeredByTabSelection = true;
+        var lastMovedTabTimestamp, lastMovedTabX, beforeLastMovedTabX, beforeLastMovedTabTimestamp;
 
         ready(function () {
             var page_width = window.innerWidth + "px";
@@ -105,68 +106,68 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
             var node = dom.byId(nodeId);
 
             if (!Config.IS_IOS()) {
-                    setMovementInfo();
-                }
+                setMovementInfo();
+            }
 
-                on(node, "touchend", touchEndListener_OverScrollBottom);
+            on(node, "touchend", touchEndListener_OverScrollBottom);
 
-                if (Config.IS_IOS()) {
-                    on(node, "touchmove", touchMoveListener_OverScrollBottom_IOS);
-                    evaluateIncludeOverScrollFlag = function () {};
-                    evaluateScrollDown = function () {};
-                    evaluateScrollOnDemand = function () {};
-                    transformY = function (y) {
-                        return y;
-                    };
+            if (Config.IS_IOS()) {
+                on(node, "touchmove", touchMoveListener_OverScrollBottom_IOS);
+                evaluateIncludeOverScrollFlag = function () {};
+                evaluateScrollDown = function () {};
+                evaluateScrollOnDemand = function () {};
+                transformY = function (y) {
+                    return y;
+                };
 
-                } else {
-                    on(node, "touchmove", touchMoveListener_OverScrollBottom_Android);
-                    on(node, "touchstart", touchstartListener_OverScrollBottom);
+            } else {
+                on(node, "touchmove", touchMoveListener_OverScrollBottom_Android);
+                on(node, "touchstart", touchstartListener_OverScrollBottom);
 
-                    evaluateIncludeOverScrollFlag = function (evt) {
-                        if (overScrollJustStarted) {
-                            startDrag_Y = evt.clientY || evt.pageY;
-                            overScrollJustStarted = false;
-                        }
-                    };
+                evaluateIncludeOverScrollFlag = function (evt) {
+                    if (overScrollJustStarted) {
+                        startDrag_Y = evt.clientY || evt.pageY;
+                        overScrollJustStarted = false;
+                    }
+                };
 
-                    evaluateScrollDown = function () {
-                        swipe(currentX_Offset, 0, PAGE_TRANSITION_TIME);
-                    };
-                    evaluateScrollOnDemand = function (y) {
-                        swipe(currentX_Offset, y, INSTANTANEOUS_TRANSITION_TIME);
-                    };
-                    transformY = function (y, evt) {
-                        var transformedY;
+                evaluateScrollDown = function () {
+                    swipe(currentX_Offset, 0, PAGE_TRANSITION_TIME);
+                };
+                evaluateScrollOnDemand = function (y) {
+                    swipe(currentX_Offset, y, INSTANTANEOUS_TRANSITION_TIME);
+                };
+                transformY = function (y, evt) {
+                    var transformedY;
 
-                        evt.stopPropagation();
-                        evt.preventDefault();
+                    evt.stopPropagation();
+                    evt.preventDefault();
 
-                        if (y <= 0 && y >= -50) { //hasta -33
+                    if (y <= 0 && y >= -50) { //hasta -33
 
-                            transformedY = (2 / 3) * y;
+                        transformedY = (2 / 3) * y;
 
-                        } else if (y < -50 && y >= -140) { //hasta -69
+                    } else if (y < -50 && y >= -140) { //hasta -69
 
-                            transformedY = -13 + (4 / 10) * y;
+                        transformedY = -13 + (4 / 10) * y;
 
-                        } else if (y < -140 && y >= -230) { //hasta -96
+                    } else if (y < -140 && y >= -230) { //hasta -96
 
-                            transformedY = -27 + (3 / 10) * y;
+                        transformedY = -27 + (3 / 10) * y;
 
-                        } else if (y < -230 && y >= -380) { //hasta -111
+                    } else if (y < -230 && y >= -380) { //hasta -111
 
-                            transformedY = -68 + (1 / 8) * y;
+                        transformedY = -68 + (1 / 8) * y;
 
-                        } else {
+                    } else {
 
-                            transformedY = -77 + (1 / 10) * y;
+                        transformedY = -77 + (1 / 10) * y;
 
-                        }
+                    }
 
-                        return transformedY;
-                    };
-                }
+                    return transformedY;
+                };
+            }
         }
 
         function setMenuWidth() {
@@ -447,7 +448,9 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
         function touchEndListener_Tabs(evt) {
             var endDrag_X = evt.clientX || evt.pageX;
             var diffX = startDrag_X_Tabs - endDrag_X;
-            
+            var timeDiff = lastMovedTabTimestamp - beforeLastMovedTabTimestamp;
+            var distanceToLastMoved = lastMovedTabX - beforeLastMovedTabX;
+
             if (diffX !== 0) {
                 currentX_OffsetTabsDragging -= diffX;
 
@@ -459,16 +462,27 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Uti
             }
 
             tabsDraggingStarted = false;
+
+            console.log("endDrag_X: " + endDrag_X);
+            console.log("Velocidad (Distancia(px)/Tiempo(ms)): " + distanceToLastMoved + "px / " + timeDiff + "ms");
+
         }
 
         function touchMoveListener_Tabs(evt) {
             var endDrag_X_ = evt.clientX || evt.pageX;
             var diffX = startDrag_X_Tabs - endDrag_X_;
+            
+            beforeLastMovedTabX = lastMovedTabX;
+            lastMovedTabX = endDrag_X_;
+            beforeLastMovedTabTimestamp = lastMovedTabTimestamp;
+            lastMovedTabTimestamp = new Date().getTime();
 
             evt.stopPropagation();
             evt.preventDefault();
 
             swipeTabsDragging(currentX_OffsetTabsDragging - diffX);
+
+            console.log("lastMovedTabX: " + lastMovedTabX);
         }
 
 
