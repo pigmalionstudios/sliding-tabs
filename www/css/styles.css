@@ -6,7 +6,7 @@
 	background-image: url(../images/favoritos_off.png);
 }
 
-.mblBackground { background-color: white !important; height: 100%;}
+.mblBackground { background-color: white !important; height: 100%; margin: 0px;}
 ::-webkit-scrollbar { display: none; }
 
 .ios5BadRenderingFix {
