@@ -1,7 +1,8 @@
 define(["dojo/ready",
 		"Config",
 		"SwipeManager",
-		"PagesLayoutManager"
+		"PagesLayoutManager",
+		"UIListener"
 		], function(ready, Config, SwipeManager, PagesLayoutManager) {
 			
 			SwipeManager.setPagesLayoutManager(PagesLayoutManager);			

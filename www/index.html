@@ -37,10 +37,7 @@
             };
         </script>
 
-<!--
         <script type="text/javascript" src="cordova.js"></script>
-
-        -->
         <script src="js/overthrow-detect.js"></script>
         <script src="js/overthrow-polyfill.js"></script>
         <script src="js/overthrow-toss.js"></script>
@@ -54,12 +51,10 @@
 
             function onDeviceReady() {
 
-                require(["dojox/mobile", "dojox/mobile/parser", "dojox/mobile/deviceTheme", 
-                "dojox/mobile/compat", "PagesLayoutManager", "UIListener", "Bootstrap"]);
+                require(["dojox/mobile", "dojox/mobile/parser", "dojox/mobile/compat", "Bootstrap"]);
                     
             }
 
-            setTimeout(onDeviceReady, 3000);
         </script>
         
         <title>Pigmalion Studios Phonegap Example</title>
