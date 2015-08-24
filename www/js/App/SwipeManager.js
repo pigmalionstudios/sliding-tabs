@@ -313,7 +313,6 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
             overScrollJustStarted = true;
         }
 
-
         function handleOverscrollMovement(y, evt) {
 
             if (y <= 0) {
