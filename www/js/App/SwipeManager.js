@@ -263,7 +263,12 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
                     while (compareTabs(tabIdAux, tabId, !swipe_Left)) {
                         
                         swipeTotalWidth += getTabWidth(tabIdAux);
-                        swipe_Left ? --tabIdAux : ++tabIdAux;
+                        
+                        if (swipe_Left) {
+                            --tabIdAux;
+                        } else { 
+                            ++tabIdAux;
+                        }
 
                     }
 
@@ -279,8 +284,11 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
                 Utilities.setProperty(prevSelectedTabId + "", "opacity", "0.5");
 
                 if (swipeScreenToo) {
-                    swipe_Left ? SwipeManager.swipeLeft(PAGE_TRANSITION_TIME, distanceBetweenTabs) : 
-                                 SwipeManager.swipeRight(PAGE_TRANSITION_TIME, distanceBetweenTabs);
+                    if (swipe_Left) {
+                        SwipeManager.swipeLeft(PAGE_TRANSITION_TIME, distanceBetweenTabs);
+                    } else { 
+                        SwipeManager.swipeRight(PAGE_TRANSITION_TIME, distanceBetweenTabs);
+                    }
                 }
 
                 setCurrTabSelectedOffsetLeft(firstTabSelected, currTabSelectedOffsetLeft);

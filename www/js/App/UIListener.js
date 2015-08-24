@@ -13,12 +13,9 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojo/query", "dojo/dom-attr", "Con
 		on(dom.byId("spinner"), "touchstart", spinaround);
 		on(dom.byId("page_about"), "click", Utilities.detectAnchorClick);
 
-
 		DetailView.setUIListener(IntLis);
 		IntLis.detailViewIsActive(false);
-		
 
-        var configItems1 = query(dom.byId("page_config")).children();
         var configItems = query(dom.byId("page_config")).children(".config_item");
 
         for (var i = configItems.length - 1; i >= 0; i--) {                
