@@ -1,11 +1,10 @@
 console.log("UIListener");
 
-define(["dojo/ready", "dojo/dom", "dojo/on", "dojo/query", "dojo/dom-attr", "dijit/registry", "Config", "DetailView", "Utilities"], 
-	function(ready, dom, on, query, domAttr, registry, Config, DetailView, Utilities) {
+define(["dojo/ready", "dojo/dom", "dojo/on", "dojo/query", "dojo/dom-attr", "Config", "DetailView", "Utilities", "dojo/NodeList-traverse"], 
+	function(ready, dom, on, query, domAttr, Config, DetailView, Utilities) {
 
 	ready(function() {
 
-		setupSwitches();
 		on(dom.byId("backBtn"), "touchstart", exitDetailView);
 		on(dom.byId("page_main"), "click", enterMainDetailView);
 		on(dom.byId("detail_btn_news"), "click", enterNewsDetailView);
@@ -18,7 +17,21 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojo/query", "dojo/dom-attr", "dij
 		DetailView.setUIListener(IntLis);
 		IntLis.detailViewIsActive(false);
 		
+
+        var configItems1 = query(dom.byId("page_config")).children();
+        var configItems = query(dom.byId("page_config")).children(".config_item");
+
+        for (var i = configItems.length - 1; i >= 0; i--) {                
+			on(configItems[i], "click", onConfigItemTapped);
+        }
+
 	});
+
+	function onConfigItemTapped(e) {
+		var nodeConfigValue = query(e.currentTarget).children(".configValueRight").first()[0];
+
+		nodeConfigValue.innerHTML = nodeConfigValue.innerHTML === "Yes" ? "No" : "Yes";
+	}
 
 	// USE THIS FUNCTION TO ANIMATE THE SPINNER, WHILE MAKING AN AJAX CALL, FOR EXAMPLE. 
 	function spinaround() {
@@ -28,23 +41,6 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "dojo/query", "dojo/dom-attr", "dij
 			Utilities.removeStyle("spinner", "spinner_spinning");
 		}, 3500);
 
-	}
-
-	function setupSwitch(active, nodeID) {
-
-		if (active) {
-			registry.byId(nodeID).set("value", "on");
-		}
-		else {
-			registry.byId(nodeID).set("value", "off");
-		}
-
-	}
-
-	function setupSwitches() {
-		setupSwitch(true, "switch3G");
-		setupSwitch(false, "switchWifi");
-		setupSwitch(true, "switchNotificaciones");
 	}
 
 	function exitDetailView() {

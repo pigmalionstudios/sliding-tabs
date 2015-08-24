@@ -23,7 +23,7 @@
 	-webkit-touch-callout: none; /* disable the IOS popup when long-press on a link */
 }      
 
-.switchWidgetsConfig {
+.configValueRight {
     float: right; 
     margin-right: 4%;
 }
@@ -301,14 +301,9 @@
     color:#666 !important;
 }
 
-.config_leftItem1 {
+.config_leftItem {
     float: left; 
     width: 50%;
-}
-
-.config_leftItem2 {
-    float: left; 
-    width: 60%;
 }
 
 .decoration{ 

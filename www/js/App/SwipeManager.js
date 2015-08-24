@@ -1,6 +1,6 @@
-define(["dojo/ready", "dojo/dom", "dojo/on", "dojox/gesture/tap", "Config", "Utilities", "ViewTransitionListener", "PagingManager",
+define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransitionListener", "PagingManager",
     "dojo/query", "dojo/dom-attr", "dojo/dom-construct", "dojo/NodeList-traverse"],
-    function (ready, dom, on, tap, Config, Utilities, VTListener, PagingManager, query, domAttr, domConstruct) {
+    function (ready, dom, on, Config, Utilities, VTListener, PagingManager, query, domAttr, domConstruct) {
         var pages;
         var startDrag_X, endDrag_X, startDrag_Y, startDrag_X_Tabs;
         var INSTANTANEOUS_TRANSITION_TIME = "0s";
