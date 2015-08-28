@@ -16,7 +16,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
         var scrollStarted = false;
         var dragStarted = false;
         var cancelPullUp = false;
-        var dragCounter;
+        var screenWasScrolledOrSwiped;
         var ViewTransitionListener, PagesLayoutManager;
         var overscrolling;
         var movInfo = {};
@@ -32,10 +32,12 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
         var MIN_TAB_ID_OFFSET = 30;
         var DELTA_MIN_PARA_PAGINAR = -40;
         var CURR_SELECTED_TAB_BASE_OFFSET = 35;
-        var evaluateIncludeOverScrollFlag, evaluateScrollDown, evaluateScrollOnDemand;
+        var MENU_BASE_WIDTH = 80;
+        var evaluateScrollDown, evaluateScrollOnDemand;
         var transformY, overScrollJustStarted;
         var pagingGestureDetected = false;
         var lastTabSwipeWasTriggeredByTabSelection = true;
+        var tabsWidth = {};
 
         ready(function () {
             var page_width = window.innerWidth + "px";
@@ -93,7 +95,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
                 navigator.notification.alert(
                     "The pages count (currently, " + pages_array.length + ") must match the tabs count (currently, " + tabs_array.length + ") . Check your index.html",// message
                     function() {}, // callback
-                    "THIS IS A MESSAGE FOR THE DEV!",
+                    "THIS IS A MESSAGE FOR YOU, DEV!",
                     "Ok"
                 );
 
@@ -104,69 +106,57 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
         function setupPullToRefresh(nodeId) {
             var node = dom.byId(nodeId);
 
-            if (!Config.IS_IOS()) {
-                    setMovementInfo();
-                }
+            on(node, "touchend", touchEndListener_OverScrollBottom);
 
-                on(node, "touchend", touchEndListener_OverScrollBottom);
+            if (Config.IS_IOS()) {
+                on(node, "touchmove", touchMoveListener_OverScrollBottom_IOS);
+                evaluateScrollDown = function () {};
+                evaluateScrollOnDemand = function () {};
+                transformY = function (y) {
+                    return y;
+                };
 
-                if (Config.IS_IOS()) {
-                    on(node, "touchmove", touchMoveListener_OverScrollBottom_IOS);
-                    evaluateIncludeOverScrollFlag = function () {};
-                    evaluateScrollDown = function () {};
-                    evaluateScrollOnDemand = function () {};
-                    transformY = function (y) {
-                        return y;
-                    };
+            } else {
+                on(node, "touchmove", touchMoveListener_OverScrollBottom_Android);
+                on(node, "touchstart", touchstartListener_OverScrollBottom);
 
-                } else {
-                    on(node, "touchmove", touchMoveListener_OverScrollBottom_Android);
-                    on(node, "touchstart", touchstartListener_OverScrollBottom);
+                evaluateScrollDown = function () {
+                    swipe(currentX_Offset, 0, PAGE_TRANSITION_TIME);
+                };
+                evaluateScrollOnDemand = function (y) {
+                    swipe(currentX_Offset, y, INSTANTANEOUS_TRANSITION_TIME);
+                };
+                transformY = function (y, evt) {
+                    var transformedY;
 
-                    evaluateIncludeOverScrollFlag = function (evt) {
-                        if (overScrollJustStarted) {
-                            startDrag_Y = evt.clientY || evt.pageY;
-                            overScrollJustStarted = false;
-                        }
-                    };
+                    evt.stopPropagation();
+                    evt.preventDefault();
 
-                    evaluateScrollDown = function () {
-                        swipe(currentX_Offset, 0, PAGE_TRANSITION_TIME);
-                    };
-                    evaluateScrollOnDemand = function (y) {
-                        swipe(currentX_Offset, y, INSTANTANEOUS_TRANSITION_TIME);
-                    };
-                    transformY = function (y, evt) {
-                        var transformedY;
+                    if (y <= 0 && y >= -50) { //hasta -33
 
-                        evt.stopPropagation();
-                        evt.preventDefault();
+                        transformedY = (2 / 3) * y;
 
-                        if (y <= 0 && y >= -50) { //hasta -33
+                    } else if (y < -50 && y >= -140) { //hasta -69
 
-                            transformedY = (2 / 3) * y;
+                        transformedY = -13 + (4 / 10) * y;
 
-                        } else if (y < -50 && y >= -140) { //hasta -69
+                    } else if (y < -140 && y >= -230) { //hasta -96
 
-                            transformedY = -13 + (4 / 10) * y;
+                        transformedY = -27 + (3 / 10) * y;
 
-                        } else if (y < -140 && y >= -230) { //hasta -96
+                    } else if (y < -230 && y >= -380) { //hasta -111
 
-                            transformedY = -27 + (3 / 10) * y;
+                        transformedY = -68 + (1 / 8) * y;
 
-                        } else if (y < -230 && y >= -380) { //hasta -111
+                    } else {
 
-                            transformedY = -68 + (1 / 8) * y;
+                        transformedY = -77 + (1 / 10) * y;
 
-                        } else {
+                    }
 
-                            transformedY = -77 + (1 / 10) * y;
-
-                        }
-
-                        return transformedY;
-                    };
-                }
+                    return transformedY;
+                };
+            }
         }
 
         function setMenuWidth() {
@@ -176,11 +166,11 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
             var j = children.length - 1;
             var rightOffsetToPivotTab = 0;
 
-            menuTotalWidth = 80;
+            menuTotalWidth = MENU_BASE_WIDTH;
             
             for (; j >= 0; --j) {
                 currNode = children[j];
-                widthCurrNode = getTabWidth(currNode.id);
+                widthCurrNode = saveTabWidth(currNode);
                 menuTotalWidth += widthCurrNode;
 
                 if (rightOffsetToPivotTab === 0 && menuTotalWidth > window.innerWidth) {
@@ -193,16 +183,29 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
             Utilities.setProperty(selectableTabs, "width", menuTotalWidth + "px");    
         }
 
+        function saveTabWidth(node) {
+            var w;
+
+            if (node && node.id && node.id !== "") {
+                var tabWidthWithoutOffset = Utilities.getPropertyWithoutPX(node, "width");
+                w = parseInt(tabWidthWithoutOffset) + TAB_WIDTH_OFFSET;
+                tabsWidth[node.id] = w;   
+            }
+            else {
+                w = 0;
+            }
+
+            return w;
+        }
+
         function getTabWidth(tabID) {
+            var w = tabsWidth[tabID];
 
-            if (tabID && tabID !== "") {
-                var currTab = dom.byId(tabID + "");
-                var tabWidth = Utilities.getPropertyWithoutPX(currTab, "width");
-
-                return parseInt(tabWidth) + TAB_WIDTH_OFFSET;   
+            if (!w) {
+                w = 0;
             }
             
-            return 0;
+            return w;
         }
 
         function compareTabs(tabId1, tabId2, evaluarPorMenorOIgual) {
@@ -226,9 +229,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
         }
 
         function tabSelected(e) {
-            var tabId = parseInt(e.srcElement.id);
-
-            selectTabById(tabId, true);
+            selectTabById(parseInt(e.srcElement.id), true);
         }
 
         function setSelectedTabWidth(tabId) {
@@ -236,14 +237,13 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
         }
 
         function selectTabById(tabId, swipeScreenToo) {
-            if (!isNaN(tabId) && tabId !== prevSelectedTabId) {
-                   
-                swipe_Left = tabId < prevSelectedTabId;
 
+            if (!isNaN(tabId) && tabId !== prevSelectedTabId) {
                 var swipeTotalWidth = 0;
                 var firstTabSelected = tabId === MIN_TAB_ID;
                 var distanceBetweenTabs;
 
+                swipe_Left = tabId < prevSelectedTabId;
                 setSelectedTabWidth(tabId);
 
                 if (menuTotalWidth === -1) {
@@ -284,11 +284,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
                 Utilities.setProperty(prevSelectedTabId + "", "opacity", "0.5");
 
                 if (swipeScreenToo) {
-                    if (swipe_Left) {
-                        SwipeManager.swipeLeft(PAGE_TRANSITION_TIME, distanceBetweenTabs);
-                    } else { 
-                        SwipeManager.swipeRight(PAGE_TRANSITION_TIME, distanceBetweenTabs);
-                    }
+                    swipeLateral(swipe_Left, PAGE_TRANSITION_TIME, distanceBetweenTabs);
                 }
 
                 setCurrTabSelectedOffsetLeft(firstTabSelected, currTabSelectedOffsetLeft);
@@ -334,16 +330,15 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
 
         }
 
+        function overScrollDetected(evt) {
+            return (evt.currentTarget.offsetHeight + evt.currentTarget.scrollTop) >= evt.currentTarget.scrollHeight;
+        }
+
         function touchMoveListener_OverScrollBottom_IOS(evt) {
 
-            if (PagingManager.canPage() && scrollStarted &&
-                (evt.currentTarget.offsetHeight + evt.currentTarget.scrollTop) >= evt.currentTarget.scrollHeight) {
-                var endDrag_Y_, diffY;
-
-                evaluateIncludeOverScrollFlag(evt);
-
-                endDrag_Y_ = evt.clientY || evt.pageY;
-                diffY = -1 * (startDrag_Y - endDrag_Y_);
+            if (PagingManager.canPage() && scrollStarted && overScrollDetected(evt)) {
+                var endDrag_Y_ = evt.clientY || evt.pageY;
+                var diffY = -1 * (startDrag_Y - endDrag_Y_);
 
                 handleOverscrollMovement(diffY, evt);
             }
@@ -351,9 +346,8 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
         }
 
         function touchMoveListener_OverScrollBottom_Android(evt) {
-            var overscrollDetected = (evt.currentTarget.offsetHeight + evt.currentTarget.scrollTop) >= evt.currentTarget.scrollHeight;
 
-            if (PagingManager.canPage() && overscrollDetected) {
+            if (PagingManager.canPage() && overScrollDetected(evt)) {
 
                 setMovementInfo(evt);
 
@@ -368,7 +362,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
         }
 
         function touchEndListener_OverScrollBottom() {
-            //console.log("touchEndListener_OverScrollBottom");
+
             if (cancelPullUp) {
 
                 evaluateScrollDown();
@@ -398,42 +392,29 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
                 var endDrag_Y_ = evt.clientY || evt.pageY;
                 var diffX = startDrag_X - endDrag_X_;
                 var diffY_ = startDrag_Y - endDrag_Y_;
-                var scrolledUp_, scrolledDown_, swipedLeft_, swipedRight_;
-                var aux;
 
-                if (diffY_ !== 0 && diffX !== 0) {
+                if (diffY_ !== 0 && diffX !== 0 && !screenWasScrolledOrSwiped) {
 
-                    dragCounter++;
+                    var aux = (Math.abs(diffY_) - Math.abs(diffX));
+                    scrollStarted = aux > 0;
 
-                    if (dragCounter == 1) {
+                    var scrolledUp_ = scrollStarted && diffY_ < 0;
+                    var scrolledDown_ = scrollStarted && diffY_ > 0;
+                    var swipedLeft_ = !scrollStarted && diffX < 0;
+                    var swipedRight_ = !scrollStarted && diffX > 0;
 
-                        aux = (Math.abs(diffY_) /*- 10*/ - Math.abs(diffX));
-                        scrollStarted = aux > 0;
-
-                        scrolledUp_ = scrollStarted && diffY_ < 0;
-                        scrolledDown_ = scrollStarted && diffY_ > 0;
-                        swipedLeft_ = !scrollStarted && diffX < 0;
-                        swipedRight_ = !scrollStarted && diffX > 0;
-
-                        movInfo = {
-                            "scrolledUp": scrolledUp_,
-                            "scrolledDown": scrolledDown_,
-                            "swiped": swipedLeft_ || swipedRight_
-                        };
-                    }
+                    movInfo = {
+                        "scrolledUp": scrolledUp_,
+                        "scrolledDown": scrolledDown_,
+                        "swiped": swipedLeft_ || swipedRight_
+                    };
+                
+                    screenWasScrolledOrSwiped = true;
                 }
 
                 movInfo.xDelta = diffX;
                 movInfo.yDelta = diffY_;
-/*
 
-                console.log("--------------MovementInfo INICIO--------------");
-                console.log("scrolledUp: " + movInfo.scrolledUp);
-                console.log("scrolledDown: " + movInfo.scrolledDown);
-                console.log("swiped: " + movInfo.swiped);
-                console.log("xDelta: " + movInfo.xDelta);
-                console.log("--------------MovementInfo FIN--------------");
-*/
             } else {
                 movInfo = {
                     "scrolledUp": false,
@@ -508,14 +489,12 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
                 var endDrag_Y_ = evt.clientY || evt.pageY;
                 var diffX = startDrag_X - endDrag_X_;
                 var diffY_ = startDrag_Y - endDrag_Y_;
-                var aux;
 
-                if (diffY_ !== 0 || diffX !== 0) {
-                    dragCounter++;
-                    if (dragCounter == 1) {
-                        aux = (Math.abs(diffY_) /*- 10*/ - Math.abs(diffX));
-                        scrollStarted = aux > 0;
-                    }
+                if (diffY_ !== 0 || diffX !== 0 && !screenWasScrolledOrSwiped) {
+                    var aux = (Math.abs(diffY_) - Math.abs(diffX));
+
+                    scrollStarted = aux > 0;                    
+                    screenWasScrolledOrSwiped = true;
                 }
 
                 if (dragStarted) {
@@ -564,7 +543,6 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
             }
 
             resetTouchFlags(false);
-
         }
 
         function touchEndListener_Android() {
@@ -589,7 +567,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
             swipeStarted = flag;
             scrollStarted = false;
             dragStarted = flag;
-            dragCounter = 0;
+            screenWasScrolledOrSwiped = false;
             overscrolling = false;
         }
 
@@ -700,8 +678,8 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
                 refreshMenuWidth: function() {
 
                     setTimeout(function() {
-                        setSelectedTabWidth(prevSelectedTabId);
                         setMenuWidth();
+                        setSelectedTabWidth(prevSelectedTabId);
                     }, 200);
 
                 }
