@@ -33,7 +33,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
         var DELTA_MIN_PARA_PAGINAR = -40;
         var CURR_SELECTED_TAB_BASE_OFFSET = 35;
         var MENU_BASE_WIDTH = 80;
-        var evaluateScrollDown, evaluateScrollOnDemand;
+        var goBackToPreOverscrollState, evaluateScrollOnDemand;
         var transformY, overScrollJustStarted;
         var pagingGestureDetected = false;
         var lastTabSwipeWasTriggeredByTabSelection = true;
@@ -110,7 +110,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
 
             if (Config.IS_IOS()) {
                 on(node, "touchmove", touchMoveListener_OverScrollBottom_IOS);
-                evaluateScrollDown = function () {};
+                goBackToPreOverscrollState = function () {};
                 evaluateScrollOnDemand = function () {};
                 transformY = function (y) {
                     return y;
@@ -120,7 +120,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
                 on(node, "touchmove", touchMoveListener_OverScrollBottom_Android);
                 on(node, "touchstart", touchstartListener_OverScrollBottom);
 
-                evaluateScrollDown = function () {
+                goBackToPreOverscrollState = function () {
                     swipe(currentX_Offset, 0, PAGE_TRANSITION_TIME);
                 };
                 evaluateScrollOnDemand = function (y) {
@@ -305,7 +305,6 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
 
         /*OVERSCROLL METHODS*/
         function touchstartListener_OverScrollBottom() {
-            //console.log("touchstartListener_OverScrollBottom");
             overScrollJustStarted = true;
         }
 
@@ -348,7 +347,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
         function touchMoveListener_OverScrollBottom_Android(evt) {
 
             if (PagingManager.canPage() && overScrollDetected(evt)) {
-
+                resetStartDragYValue(evt);
                 setMovementInfo(evt);
 
                 if (overscrolling || movInfo.scrolledDown) {
@@ -365,10 +364,9 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
 
             if (cancelPullUp) {
 
-                evaluateScrollDown();
+                goBackToPreOverscrollState();
 
                 if (pagingGestureDetected) {
-                    //console.log("NEXT PAGE!!!!");
                     PagingManager.onPagingGesture();
                     pagingGestureDetected = false;
                 }
@@ -378,7 +376,17 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
 
         }
 
+        //this function helps to prevent a bug that happens when the user starts to scroll down
+        //before the Pagination message is visible (The Pagination message appears way up than it should be)
+        function resetStartDragYValue(evt) {
+            if (overScrollJustStarted) {
+                startDrag_Y = evt.clientY || evt.pageY;
+                overScrollJustStarted = false;
+            }
+        }
+
        /*OVERSCROLL METHODS*/
+       
         function touchstartListener(evt) {
             resetTouchFlags(true);
             startDrag_X = evt.clientX || evt.pageX;
