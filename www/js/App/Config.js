@@ -8,7 +8,6 @@ define(["dojo/ready", "dojo/dom-construct", "dojo/dom", "dojo/dom-attr",
 	var isAndroidV41x_Or_Superior;
 	var backButtonAction;
 	var menuButtonAction;
-	var isIOSWithRenderingIssue;
 	var dummyTextArray;
 
 	ready(function() {
@@ -45,10 +44,7 @@ define(["dojo/ready", "dojo/dom-construct", "dojo/dom", "dojo/dom-attr",
 		if (isAndroid) {
 			isAndroidV41x_Or_Superior =  (versionMajor >= 4) && (versionMiddle >= 1);
 
-        } else if (isIOS) {
-            isIOSWithRenderingIssue = versionMajor == 5 && versionMiddle == 1;
-            
-        } else {
+        } else if (isIOS) {} else {
         	var versionMajorBB10_Str = device.version.substring(0, 2);
         	var versionMajorBB10 = parseInt(versionMajorBB10_Str);
 
@@ -72,7 +68,6 @@ define(["dojo/ready", "dojo/dom-construct", "dojo/dom", "dojo/dom-attr",
 	var Config = function() {
 		return {		
 			IS_IOS: function() {return isIOS;},
-            IS_IOS_WITHBAD_RENDERING_ISSUE: function() {return isIOSWithRenderingIssue;},
 			IS_ANDROID: function() {return isAndroid;},
 			IS_BB10: function() {return isBlackberry10;},
 			IS_ANDROID_V41_OR_SUPERIOR: function() {return isAndroidV41x_Or_Superior;},			

@@ -16,10 +16,6 @@ define(["dojo/ready",
 				SwipeManager.refreshMenuWidth();
 				PagesLayoutManager.resizePages();
 
-				if (!Config.IS_ANDROID()) {
-					setTimeout(navigator.splashscreen.hide, splash_timeout);
-				}
-
 			});		
 
 });

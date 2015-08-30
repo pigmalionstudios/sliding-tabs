@@ -311,12 +311,10 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
         function handleOverscrollMovement(y, evt) {
 
             if (y <= 0) {
-
                 var transformedY = transformY(y, evt);
+                
                 evaluateScrollOnDemand(transformedY);
                 cancelPullUp = true;
-
-                //console.log("transformedY: " + transformedY);
 
                 if (transformedY < DELTA_MIN_PARA_PAGINAR) {
                     PagingManager.releaseToPage();
@@ -386,7 +384,7 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
         }
 
        /*OVERSCROLL METHODS*/
-       
+
         function touchstartListener(evt) {
             resetTouchFlags(true);
             startDrag_X = evt.clientX || evt.pageX;
@@ -635,8 +633,6 @@ define(["dojo/ready", "dojo/dom", "dojo/on", "Config", "Utilities", "ViewTransit
             if (x >= MAX_SWIPE_OFFSET && x <= 0) {
                 pages.style.webkitTransitionDuration = duration;
                 pages.style.webkitTransform = "translate3d(" + x + "px," + y + "px, 0px)";
-
-                console.log("swipe: " + x + " - duration: " + duration);
             }
         }
 
