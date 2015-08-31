@@ -6,7 +6,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         
         <link href="css/styles.css" rel="stylesheet" type="text/css"/>
-        
+
         <script type="text/javascript">
             var djConfig = {
                 parseOnLoad:true,
@@ -24,13 +24,16 @@
                     { name: "SwipeManager", location: "App", main: "SwipeManager" },
                     { name: "Config", location: "App", main: "Config" },
                     { name: "PagesLayoutManager", location: "App", main: "PagesLayoutManager" },                    
-                    { name: "UIListener", location: "App", main: "UIListener" }
+                    { name: "UIListener", location: "App", main: "UIListener" },
+                    { name: "dojo", location: "dojo", main: "dojo" },                   
+                    { name: "dojox", location: "dojox"}
                 ]
             };
         </script>
 
         <script type="text/javascript" src="cordova.js"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js"></script>
+        <script src="js/dojo/dojo.js"></script>
+
         <script type="text/javascript">
 
             document.addEventListener("deviceready", onDeviceReady, false);
