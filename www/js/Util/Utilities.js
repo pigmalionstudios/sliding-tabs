@@ -1,11 +1,10 @@
-define(["dijit/registry",
-		"dojo/dom-attr",
+define(["dojo/dom-attr",
 		"dojo/fx/Toggler",
 		"dojo/dom",
 		"dojo/dom-style",
 		"dojo/dom-class",
 		"dojo/query"
-		], function(registry, domAttr, Toggler, dom, domStyle, domClass, query){
+		], function(domAttr, Toggler, dom, domStyle, domClass, query){
 
 			var Uti = function() {
 
@@ -73,14 +72,6 @@ define(["dijit/registry",
 					//posicion de la ocurrencia de str2 en str1
 					contiene: function(str1, str2) {
 						return (str1.toUpperCase().indexOf(str2.toUpperCase()) >= 0);
-					},
-					
-					getWidgetValue: function(id) {
-						return registry.byId(id).get("value");
-					},
-
-					setWidgetValue: function(id, value) {
-						return registry.byId(id).set("value", value);
 					},
 					
 					getValue: function(id) {

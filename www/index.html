@@ -1,5 +1,5 @@
 <!doctype html>
-<html id="htmlnode" class="htmlClass overthrow">
+<html id="htmlnode" class="htmlClass">
     <head>
         <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
         <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
@@ -7,11 +7,6 @@
         
         <link href="css/styles.css" rel="stylesheet" type="text/css"/>
         
-
-        <!--
-        <script src="http://192.168.1.113:8080/target/target-script-min.js#anonymous"></script>
-        -->
-
         <script type="text/javascript">
             var djConfig = {
                 parseOnLoad:true,
@@ -29,28 +24,20 @@
                     { name: "SwipeManager", location: "App", main: "SwipeManager" },
                     { name: "Config", location: "App", main: "Config" },
                     { name: "PagesLayoutManager", location: "App", main: "PagesLayoutManager" },                    
-                    { name: "UIListener", location: "App", main: "UIListener" },
-                    { name: "dojo", location: "dojo", main: "dojo" },                   
-                    { name: "dojox", location: "dojox"},
+                    { name: "UIListener", location: "App", main: "UIListener" }
                 ]
             };
         </script>
 
         <script type="text/javascript" src="cordova.js"></script>
-        <script src="js/overthrow-detect.js"></script>
-        <script src="js/overthrow-polyfill.js"></script>
-        <script src="js/overthrow-toss.js"></script>
-        <script src="js/overthrow-init.js"></script>
-        <script src="js/anchorscroll.overthrow.js"></script>
-        <script src="js/dojo/dojo.js"></script>
-
+        <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js"></script>
         <script type="text/javascript">
 
             document.addEventListener("deviceready", onDeviceReady, false);
 
             function onDeviceReady() {
 
-                require(["dojox/mobile", "dojox/mobile/parser", "dojox/mobile/compat", "Bootstrap"]);
+                require(["dojox/mobile", "Bootstrap"]);
                     
             }
 
@@ -110,7 +97,7 @@
             <div id="pages" class="pages"> <!-- THE NUMBER OF PAGES AND THE NUMBERS OF TABS MUST MATCH, ALWAYS!! -->
 
                 <!--PAGE-->
-                <div id="page_main" class="page overthrow">
+                <div id="page_main" class="page">
                     Main Content
 
                     <br>
@@ -193,7 +180,7 @@
                 </div>
 
                 <!--PAGE-->
-                <div id="page_news" class="page overthrow">
+                <div id="page_news" class="page">
                     News Content
                     <br>
                     <div id="detail_btn_news">
@@ -202,7 +189,7 @@
                 </div>
 
                 <!--PAGE-->
-                <div id="page_popular" class="page overthrow">
+                <div id="page_popular" class="page">
                     Popular Content
                     <br>
                     <div id="detail_btn_popular">
@@ -211,7 +198,7 @@
                 </div>
 
                 <!--PAGE-->
-                <div id="page_favorites" class="page overthrow">
+                <div id="page_favorites" class="page">
                     Favorites Content
                     <br>
                     <div id="detail_btn_favorites">
@@ -220,7 +207,7 @@
                 </div>
 
                 <!--PAGE-->
-                <div id="page_config" class="page overthrow">
+                <div id="page_config" class="page">
 
                     <div class="config_item">
 
@@ -261,7 +248,7 @@
 
 
                 <!--PAGE-->
-               <div id="page_about" class="page overthrow">
+               <div id="page_about" class="page">
                    <div class="detail">
 
                         This Phonegap + Dojo demo app is intended to be the starting point for any project that needs swipeable tabs. It has a Google`s Play Store look and feel and can be configured to allow more or less tabs.
