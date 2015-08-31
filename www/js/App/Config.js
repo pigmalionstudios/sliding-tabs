@@ -83,7 +83,7 @@ define(["dojo/ready", "dojo/dom-construct", "dojo/dom", "dojo/dom-attr",
 				Config.setBackButtonAction(function() {
 			
 					navigator.notification.confirm(
-						"¿Realmente querés salir?",// message
+						"¿Realmente quieres salir?",// message
 						function(buttonIndex){
 							if (buttonIndex == 2) 
 								{}
@@ -91,7 +91,7 @@ define(["dojo/ready", "dojo/dom-construct", "dojo/dom", "dojo/dom-attr",
 								navigator.app.exitApp();
 					    },  // callback
 					    "Atención",// title
-					    "Sí, No"// buttonName
+					    "Si, No"// buttonName
 					);
 				}); 
 			
