@@ -4,3 +4,5 @@ platforms/blackberry10/build
 platforms/blackberry10/www
 platforms/ios/Phonegap Basic Project.xcodeproj/project.xcworkspace/xcshareddata
 platforms/android/CordovaLib/ant-build
+platforms/android/CordovaLib/build
+platforms/android/.gradle
